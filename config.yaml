@@ -1,0 +1,22 @@
+---
+# application parameters
+app:
+  name: 'OpenGenomics'
+  version: '0.1.0'
+  host: '0.0.0.0'
+  port: 8080
+  debug: 'True'
+  log_dir: './log/'
+  log_max_bytes: 10240
+  log_backup_count: 10
+  tmp_dir: './tmp/'
+# mongodb connection parameters
+mongodb:
+  install_dir: '/usr/local/bin/'
+  #install_dir: '/usr/bin/' 
+  host: 'localhost'
+  port: 27017
+  db_name: 'og'
+  bulk_size_elem: 4096
+  bulk_size_dict: 1
+...

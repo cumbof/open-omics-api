@@ -1,0 +1,15 @@
+collections:
+    annotations:
+        annotation_methylation27
+        annotation_methylation450
+        annotation_geneexpression
+    experiments: [ row, tumor, aliquot ]
+        experiment_geneexpression
+        experiment_isoformexpression
+        experiment_mirnaexpression
+        experiment_methylationbetavalue [ annotation_ ]
+        experiment_maskedsomaticmutation
+        experiment_copynumbersegment
+        experiment_maskedcopynumbersegment
+    metadata:
+        metadata

@@ -1,0 +1,83 @@
+basics:
+    /api/routes
+        list of all endpoints
+    /api/documentation
+        redirect to the official API documentation
+    /api/version
+        API version
+    /api/sources
+
+annotations:
+    /annotation/sources
+        list of all sources (e.g. GDC)
+    /annotation/source/<source>/list
+        list of all available annotations for a specific source
+    /annotation/source/<source>/annotation/<annotation_name>/all
+        return the complete annotation
+    /annotation/source/<source>/annotation/<annotation_name>/coordinates
+        list of all coordinates (chr, start, end, strand)
+    /annotation/source/<source>/annotation/<annotation_name>/ids
+        list of all genes if annotation_name = 'geneexpression',
+        or list of all methylated sites if annotation_name = 'methylation27' or 'methylation450'
+    /annotation/source/<source>/annotation/<annotation_name>/id/<id>/all
+        return annotation row for the specified id (gene or methylated site)
+
+experiments:
+    /experiment/sources
+        list of all data sources (e.g. GDC)
+    /experiment/datatypes
+        list of all available data type
+    /experiment/tumors
+        list of all available tumors
+    /experiment/programs
+        list of all available programs (TCGA, TARGET, etc)
+    /experiment/source/<source>/programs
+        list of all programs for a specific source
+    /experiment/source/<source>/aliquots
+        list of all aliquots for a specific source
+    /experiment/source/<source>/datatypes
+        list of all datatypes for a specific source
+    /experiment/source/<source>/tumors
+        list of all tumors for a specific source
+    /experiment/source/<source>/program/<program>/aliquots
+        list of all aliquots for a specific program
+    /experiment/source/<source>/program/<program>/datatypes
+        list of all available data type for a specific program
+    /experiment/source/<source>/program/<program>/tumors
+        list of all available tumors for a specific program
+    /experiment/source/<source>/program/<program>/tumor/<tumor>/datatypes
+        list of all available data type for a specific tumor and program
+    /experiment/source/<source>/program/<program>/tumor/<tumor>/aliquots
+        list of all aliquots for a specific tumor and program
+    /experiment/source/<source>/program/<program>/tumor/<tumor>/datatype/<datatype>/aliquots
+        list of all aliquots for a specific data type, tumor, and program
+    /experiment/source/<source>/program/<program>/tumor/<tumor>/datatype/<datatype>/aliquot/<aliquot>/all
+        return the selected experiment (all rows)
+    /experiment/source/<source>/program/<program>/tumor/<tumor>/datatype/<datatype>/aliquot/<aliquot>/coordinates
+        list of all coordinates (chr, start, end, strand)
+    /experiment/source/<source>/program/<program>/tumor/<tumor>/datatype/<datatype>/aliquot/<aliquot>/ids
+        list of all genes, methylated sites, mirna ids, etc
+    /experiment/source/<source>/program/<program>/tumor/<tumor>/datatype/<datatype>/aliquot/<aliquot>/id/<id>/all
+        return a specific row for a specific experiment and id
+    /experiment/aliquot/<aliquot>/list
+        return a list of experiments related to the specified aliquot
+        or a list of endpoints:
+        /experiment/source/<source>/program/<program>/tumor/<tumor>/datatype/<datatype>/aliquot/<aliquot>/all
+
+metadata:
+    /metadata/sources
+        list of all sources (e.g. GDC)
+    /metadata/source/<source>/attribute/<attribute>/all
+        return a list of all possible values for a specific attribute (dictionary)
+    /metadata/source/<source>/attribute/<attribute>/value/<value>/aliquots
+        return a list of all related aliquots with a list of endpoints:
+        /experiment/source/<source>/program/<program>/tumor/<tumor>/datatype/<datatype>/aliquot/<aliquot>/all
+    /metadata/attribute/<attribute>/all
+        return a list of all possible values for a specific attribute (dictionary)
+    /metadata/attribute/<attribute>/value/<value>/aliquots
+        return a list of all related aliquots with a list of endpoints:
+        /experiment/source/<source>/program/<program>/tumor/<tumor>/datatype/<datatype>/aliquot/<aliquot>/all
+    /metadata/aliquot/<aliquot>/list
+        return a list of metadata related to the specified aliquot
+        or a list of endpoints:
+        /metadata/program/<program>/tumor/<tumor>/datatype/<datatype>/aliquot/<aliquot>/all

@@ -88,7 +88,7 @@ def create_meta_documents(meta_file_path):
         for line in meta_file:
             if line.strip() != "":
                 splitted_line = line.split('\t')
-                doc[splitted_line[0].strip()]= splitted_line[1].strip()
+                doc[splitted_line[0].strip()] = splitted_line[1].strip()
     return doc
 
 # return array with attributes of the schema

@@ -28,27 +28,28 @@ def poputate_experiments(mydb, experiment_base_path):
                         exp_collection = mydb[ "experiment_" + datatype_dir.lower().replace("_", "") ]
                         meta_collection = mydb[ "metadata" ]
                         datatype_dir_path = os.path.join(tumor_dir_path, datatype_dir)
+                        print('--------------------'+'\ndata processing from '+datatype_dir_path)
                         for subdir, dirs, files in os.walk( datatype_dir_path ):
                             bed_file_path = None
-                            schema_file_path = None
                             meta_file_path = None
+                            schema_file_path = os.path.join(datatype_dir_path, 'header.schema')
+                            schema_content = get_schema_from_XML(schema_file_path)
                             for file in files:
                                 if file.endswith(".bed"):
                                     bed_file_path = os.path.join(datatype_dir_path, file)
+                                    additional_values = {
+                                        "tumor": tumor_dir.lower(),
+                                        "aliquot": "-".join(os.path.splitext(file)[0].split("-")[:-1])
+                                    }
+                                    exp_docs = create_documents(bed_file_path, schema_content, exclude_idx=exclude_idx_map[datatype_dir], additional_entries=additional_values)
+                                    exp_collection.insert_many(exp_docs)
+                                    print('bed: ' + file)                           
                                 elif file.endswith(".meta"):
                                     meta_file_path = os.path.join(datatype_dir_path, file)
-                                elif file.endswith(".schema"):
-                                    schema_file_path = os.path.join(datatype_dir_path, file)
-                            schema_content = get_schema_from_XML(schema_file_path)
-                            additional_values = {
-                                "tumor": tumor_dir.lower(),
-                                "aliquot": "-".join(os.path.splitext(file)[0].split("-")[:-1])
-                            }
-                            exp_docs = create_documents(bed_file_path, schema_content, exclude_idx=exclude_idx_map[datatype_dir], additional_entries=additional_values)
-                            exp_collection.insert_many(exp_docs)
-                            meta_doc = create_meta_documents(meta_file_path)
-                            meta_collection.insert_one(meta_doc)
-
+                                    meta_doc = create_meta_document(meta_file_path)
+                                    meta_collection.insert_one(meta_doc)
+                                    print('meta: ' + file)                           
+                            
 def populate_annotations(mydb, annotation_base_path):
     for subdir_base, dirs_base, files_base in os.walk( annotation_base_path ):
         for annotation_dir in dirs_base:
@@ -82,13 +83,18 @@ def create_documents(bed_file_path, schema_content, exclude_idx=[], additional_e
                 docs.append(doc)
     return docs
 
-def create_meta_documents(meta_file_path):
+def create_meta_document(meta_file_path):
     doc = { }
     with open(meta_file_path) as meta_file:
         for line in meta_file:
             if line.strip() != "":
                 splitted_line = line.split('\t')
-                doc[splitted_line[0].strip()] = splitted_line[1].strip()
+                attribute = splitted_line[0].strip()
+                values = splitted_line[1].strip()
+                splitted_values = values.split(',')
+                if len(splitted_values) > 1:
+                   values = [v for v in splitted_values] 
+                doc[attribute] = values
     return doc
 
 # return array with attributes of the schema
@@ -100,5 +106,6 @@ def get_schema_from_XML(schema_file_path):
         schema.append(child.text)
     return schema
 
-populate_annotations(mydb, annotation_base_path)
-poputate_experiments(mydb, experiment_base_path)
+if __name__ == '__main__':
+    populate_annotations(mydb, annotation_base_path)
+    poputate_experiments(mydb, experiment_base_path)

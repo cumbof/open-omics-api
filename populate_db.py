@@ -17,8 +17,6 @@ exclude_idx_map = {
 
 client = pymongo.MongoClient("mongodb://localhost:27017/")
 mydb = client["og"]
-populate_annotations(mydb, annotation_base_path)
-poputate_experiments(mydb, experiment_base_path)
 
 def poputate_experiments(mydb, experiment_base_path):
     for subdir_base, dirs_base, files_base in os.walk( experiment_base_path ):
@@ -48,8 +46,8 @@ def poputate_experiments(mydb, experiment_base_path):
                             }
                             exp_docs = create_documents(bed_file_path, schema_content, exclude_idx=exclude_idx_map[datatype_dir], additional_entries=additional_values)
                             exp_collection.insert_many(exp_docs)
-                            meta_docs = create_meta_documents(meta_file_path)
-                            meta_collection.insert_many(meta_docs)
+                            meta_doc = create_meta_documents(meta_file_path)
+                            meta_collection.insert_one(meta_doc)
 
 def populate_annotations(mydb, annotation_base_path):
     for subdir_base, dirs_base, files_base in os.walk( annotation_base_path ):
@@ -85,17 +83,13 @@ def create_documents(bed_file_path, schema_content, exclude_idx=[], additional_e
     return docs
 
 def create_meta_documents(meta_file_path):
-    docs = []
+    doc = { }
     with open(meta_file_path) as meta_file:
         for line in meta_file:
             if line.strip() != "":
                 splitted_line = line.split('\t')
-                doc = {
-                    "attribute": splitted_line[0],
-                    "value": splitted_line[1]
-                }
-                docs.append(doc)
-    return docs
+                doc[splitted_line[0].strip()] = splitted_line[1].strip()
+    return doc
 
 # return array with attributes of the schema
 def get_schema_from_XML(schema_file_path):
@@ -105,3 +99,6 @@ def get_schema_from_XML(schema_file_path):
     for child in root[0]:
         schema.append(child.text)
     return schema
+
+populate_annotations(mydb, annotation_base_path)
+poputate_experiments(mydb, experiment_base_path)

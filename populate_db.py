@@ -77,7 +77,7 @@ def create_documents(bed_file_path, schema_content, exclude_idx=[], additional_e
                 doc = { }
                 for attr_index in range(0, len(splitted_line)): 
                     if attr_index not in exclude_idx:
-                        doc[ schema_content[attr_index] ] = splitted_line[attr_index]
+                        doc[ schema_content[attr_index] ] = splitted_line[attr_index].strip()
                         for additional_attr in additional_entries:
                             doc[ additional_attr ] = additional_entries[additional_attr]
                 docs.append(doc)

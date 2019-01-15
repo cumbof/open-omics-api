@@ -1,5 +1,6 @@
 import os, datetime, logging, yaml, pytz
 from logging.handlers import RotatingFileHandler
+from mongodb_driver import *
 
 from flask import Flask
 from routes import *
@@ -17,6 +18,11 @@ if __name__ == '__main__':
     if not os.path.exists(log_dir):
         os.makedirs(log_dir);
 
+    # init mongodb
+    mongodb_client = getClient()
+    if not isMongodAlive(mongodb_client):
+        startMongod();
+        mongodb_client = getClient()
     # starting flask
     print ' * Configuring Flask';
 

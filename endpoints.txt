@@ -8,18 +8,16 @@ basics:
     /api/sources
 
 annotations:
-    /annotation/sources
-        list of all sources (e.g. GDC)
-    /annotation/source/<source>/list
-        list of all available annotations for a specific source
-    /annotation/source/<source>/annotation/<annotation_name>/all
+    /annotation/list
+        list of all available annotations
+    /annotation/<annotation_name>/all
         return the complete annotation
-    /annotation/source/<source>/annotation/<annotation_name>/coordinates
+    /annotation/<annotation_name>/coordinates
         list of all coordinates (chr, start, end, strand)
-    /annotation/source/<source>/annotation/<annotation_name>/ids
+    /annotation/<annotation_name>/ids
         list of all genes if annotation_name = 'geneexpression',
-        or list of all methylated sites if annotation_name = 'methylation27' or 'methylation450'
-    /annotation/source/<source>/annotation/<annotation_name>/id/<id>/all
+        or list of all methylated sites if annotation_name = 'humanmethylation'
+    /annotation/<annotation_name>/id/<elem_id>
         return annotation row for the specified id (gene or methylated site)
 
 experiments:
@@ -57,7 +55,7 @@ experiments:
         list of all coordinates (chr, start, end, strand)
     /experiment/source/<source>/program/<program>/tumor/<tumor>/datatype/<datatype>/aliquot/<aliquot>/ids
         list of all genes, methylated sites, mirna ids, etc
-    /experiment/source/<source>/program/<program>/tumor/<tumor>/datatype/<datatype>/aliquot/<aliquot>/id/<id>/all
+    /experiment/source/<source>/program/<program>/tumor/<tumor>/datatype/<datatype>/aliquot/<aliquot>/id/<elem_id>/all
         return a specific row for a specific experiment and id
     /experiment/aliquot/<aliquot>/list
         return a list of experiments related to the specified aliquot
@@ -80,4 +78,4 @@ metadata:
     /metadata/aliquot/<aliquot>/list
         return a list of metadata related to the specified aliquot
         or a list of endpoints:
-        /metadata/program/<program>/tumor/<tumor>/datatype/<datatype>/aliquot/<aliquot>/all
+        /experiment/source/<source>/program/<program>/tumor/<tumor>/datatype/<datatype>/aliquot/<aliquot>/all

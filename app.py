@@ -56,5 +56,5 @@ if __name__ == '__main__':
         app.logger.info(application() + ' ['+release()+'] startup');
     # start Flask
     app.secret_key = os.urandom(16);
-    app.run(debug=app_debug, host=app_host, port=app_port);
+    app.run(debug=app_debug, host=app_host, port=app_port, threaded=True);
     

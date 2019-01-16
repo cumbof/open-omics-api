@@ -5,7 +5,7 @@ from pymongo import *
 import os, subprocess
 
 config = None;
-with open("./dbss.yaml", 'r') as cfg:
+with open("./config.yaml", 'r') as cfg:
     config = yaml.load(cfg);
 mongodb_dir = config["mongodb"]["install_dir"];
 mongodb_host = config["mongodb"]["host"];
@@ -47,9 +47,10 @@ def getClient():
     return MongoClient(mongodb_host, mongodb_port);
 
 # get stuff
-def get_documents(client, collection_id, find_attributes={}, find_criteria={}, max_attempts=5):
+def get_documents(client, collection_id, find_attributes={}, find_criteria={}, max_attempts=5, display_obj_ids=0):
     documents = [];
-    if client not None:
+    find_criteria['_id'] = display_obj_ids;
+    if client is not None:
         db = client[mongodb_db_name];
         collection = db[collection_id];
         try:
@@ -63,4 +64,4 @@ def get_documents(client, collection_id, find_attributes={}, find_criteria={}, m
             else:
                 print str(e);
                 return [];
-    return [];
+    return documents;

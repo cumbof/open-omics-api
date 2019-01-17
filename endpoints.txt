@@ -55,7 +55,7 @@ experiments:
         list of all coordinates (chr, start, end, strand)
     /experiment/source/<source>/program/<program>/tumor/<tumor>/datatype/<datatype>/aliquot/<aliquot>/ids
         list of all genes, methylated sites, mirna ids, etc
-    /experiment/source/<source>/program/<program>/tumor/<tumor>/datatype/<datatype>/aliquot/<aliquot>/id/<elem_id>/all
+    /experiment/source/<source>/program/<program>/tumor/<tumor>/datatype/<datatype>/aliquot/<aliquot>/id/<elem_id>
         return a specific row for a specific experiment and id
     /experiment/aliquot/<aliquot>/list
         return a list of experiments related to the specified aliquot

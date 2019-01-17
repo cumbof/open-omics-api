@@ -1,0 +1,1299 @@
+---
+# sources map
+sources:
+  - id: 'gdc'
+    description: Genomic Data Commons (GDC)
+    index: 0
+# programs map
+programs:
+  - id: 'tcga'
+    description: 'The Cancer Genome Atlas (TCGA)'
+    source: 0
+    index: 0
+# data types map
+datatypes:
+  - id: 'geneexpressionquantification'
+    description: 'Gene Expression Quantification'
+    index: 0
+    programs: [0]
+  - id: 'mirnaexpressionquantification'
+    description: 'miRNA Expression Quantification'
+    index: 1
+    programs: [0]
+  - id: 'copynumbersegment'
+    description: 'Copy Number Segment'
+    index: 2
+    programs: [0]
+  - id: 'isoformexpressionquantification'
+    description: 'Isoform Expression Quantification'
+    index: 3
+    programs: [0]
+  - id: 'maskedcopynumbersegment'
+    description: 'Masked Copy Number Segment'
+    index: 4
+    programs: [0]
+  - id: 'maskedsomaticmutation'
+    description: 'Masked Somatic Mutation'
+    index: 5
+    programs: [0]
+  - id: 'methylationbetavalue'
+    description: 'Methylation Beta Value'
+    index: 6
+    programs: [0]
+# tumors map
+tumors:
+  - tag: 'tcga-acc'
+    description: 'Adrenocortical Carcinoma'
+    source: 0
+    program: 0
+    datatypes: [0, 1, 2, 3, 4, 5, 6]
+    aggregatedstats:
+      - aliquot: 771
+        samples: 771
+        patients: 595
+    stats:
+      - index: 0
+        aliquots: 79
+        samples: 79
+        patients: 79
+      - index: 1
+        aliquots: 80
+        samples: 80
+        patients: 80
+      - index: 2
+        aliquots: 180
+        samples: 180
+        patients: 92
+      - index: 3
+        aliquots: 80
+        samples: 80
+        patients: 80
+      - index: 4
+        aliquots: 180
+        samples: 180
+        patients: 92
+      - index: 5
+        aliquots: 92
+        samples: 92
+        patients: 92
+      - index: 6
+        aliquots: 80
+        samples: 80
+        patients: 80
+  - tag: 'tcga-blca'
+    description: 'Bladder Urothelial Carcinoma'
+    source: 0
+    program: 0
+    datatypes: [0, 1, 2, 3, 4, 5, 6]
+    aggregatedstats:
+      - aliquot: 3787
+        samples: 3763
+        patients: 2874
+    stats:
+      - index: 0
+        aliquots: 433
+        samples: 430
+        patients: 408
+      - index: 1
+        aliquots: 437
+        samples: 432
+        patients: 409
+      - index: 2
+        aliquots: 814
+        samples: 810
+        patients: 412
+      - index: 3
+        aliquots: 437
+        samples: 432
+        patients: 409
+      - index: 4
+        aliquots: 814
+        samples: 810
+        patients: 412
+      - index: 5
+        aliquots: 412
+        samples: 412
+        patients: 412
+      - index: 6
+        aliquots: 440
+        samples: 437
+        patients: 412
+  - tag: 'tcga-brca'
+    description: 'Breast Invasive Carcinoma'
+    source: 0
+    program: 0
+    datatypes: [0, 1, 2, 3, 4, 5, 6]
+    aggregatedstats:
+      - aliquot: 10293
+        samples: 10268
+        patients: 7516
+    stats:
+      - index: 0
+        aliquots: 1221
+        samples: 1216
+        patients: 1091
+      - index: 1
+        aliquots: 1206
+        samples: 1201
+        patients: 1078
+      - index: 2
+        aliquots: 2221
+        samples: 2217
+        patients: 1095
+      - index: 3
+        aliquots: 1206
+        samples: 1201
+        patients: 1078
+      - index: 4
+        aliquots: 2221
+        samples: 2217
+        patients: 1095
+      - index: 5
+        aliquots: 985
+        samples: 985
+        patients: 985
+      - index: 6
+        aliquots: 1233
+        samples: 1231
+        patients: 1094
+  - tag: 'tcga-cesc'
+    description: 'Cervical Squamous Cell Carcinoma and Endocervical Adenocarcinoma'
+    source: 0
+    program: 0
+    datatypes: [0, 1, 2, 3, 4, 5, 6]
+    aggregatedstats:
+      - aliquot: 2706
+        samples: 2706
+        patients: 2118
+    stats:
+      - index: 0
+        aliquots: 309
+        samples: 309
+        patients: 304
+      - index: 1
+        aliquots: 312
+        samples: 312
+        patients: 307
+      - index: 2
+        aliquots: 586
+        samples: 586
+        patients: 302
+      - index: 3
+        aliquots: 312
+        samples: 312
+        patients: 307
+      - index: 4
+        aliquots: 586
+        samples: 586
+        patients: 302
+      - index: 5
+        aliquots: 289
+        samples: 289
+        patients: 289
+      - index: 6
+        aliquots: 312
+        samples: 312
+        patients: 307
+  - tag: 'tcga-chol'
+    description: 'Cholangiocarcinoma'
+    source: 0
+    program: 0
+    datatypes: [0, 1, 2, 3, 4, 5, 6]
+    aggregatedstats:
+      - aliquot: 401
+        samples: 401
+        patients: 267
+    stats:
+      - index: 0
+        aliquots: 45
+        samples: 45
+        patients: 36
+      - index: 1
+        aliquots: 45
+        samples: 45
+        patients: 36
+      - index: 2
+        aliquots: 85
+        samples: 85
+        patients: 36
+      - index: 3
+        aliquots: 45
+        samples: 45
+        patients: 36
+      - index: 4
+        aliquots: 85
+        samples: 85
+        patients: 36
+      - index: 5
+        aliquots: 51
+        samples: 51
+        patients: 51
+      - index: 6
+        aliquots: 45
+        samples: 45
+        patients: 36
+  - tag: 'tcga-coad'
+    description: 'Colon Adenocarcinoma'
+    source: 0
+    program: 0
+    datatypes: [0, 1, 2, 3, 4, 5, 6]
+    aggregatedstats:
+      - aliquot: 4350
+        samples: 4236
+        patients: 3117
+    stats:
+      - index: 0
+        aliquots: 521
+        samples: 512
+        patients: 456
+      - index: 1
+        aliquots: 465
+        samples: 461
+        patients: 444
+      - index: 2
+        aliquots: 972
+        samples: 928
+        patients: 458
+      - index: 3
+        aliquots: 465
+        samples: 461
+        patients: 444
+      - index: 4
+        aliquots: 972
+        samples: 928
+        patients: 458
+      - index: 5
+        aliquots: 399
+        samples: 399
+        patients: 399
+      - index: 6
+        aliquots: 556
+        samples: 547
+        patients: 458
+  - tag: 'tcga-dlbc'
+    description: 'Lymphoid Neoplasm Diffuse Large B-cell Lymphoma'
+    source: 0
+    program: 0
+    datatypes: [0, 1, 2, 3, 4, 5, 6]
+    aggregatedstats:
+      - aliquot: 415
+        samples: 415
+        patients: 323
+    stats:
+      - index: 0
+        aliquots: 48
+        samples: 48
+        patients: 48
+      - index: 1
+        aliquots: 47
+        samples: 47
+        patients: 47
+      - index: 2
+        aliquots: 94
+        samples: 94
+        patients: 48
+      - index: 3
+        aliquots: 47
+        samples: 47
+        patients: 47
+      - index: 4
+        aliquots: 94
+        samples: 94
+        patients: 48
+      - index: 5
+        aliquots: 37
+        samples: 37
+        patients: 37
+      - index: 6
+        aliquots: 48
+        samples: 48
+        patients: 48
+  - tag: 'tcga-esca'
+    description: 'Esophageal Carcinoma'
+    source: 0
+    program: 0
+    datatypes: [0, 1, 2, 3, 4, 5, 6]
+    aggregatedstats:
+      - aliquot: 1705
+        samples: 1701
+        patients: 1271
+    stats:
+      - index: 0
+        aliquots: 173
+        samples: 173
+        patients: 164
+      - index: 1
+        aliquots: 200
+        samples: 198
+        patients: 184
+      - index: 2
+        aliquots: 373
+        samples: 373
+        patients: 185
+      - index: 3
+        aliquots: 200
+        samples: 198
+        patients: 184
+      - index: 4
+        aliquots: 373
+        samples: 373
+        patients: 185
+      - index: 5
+        aliquots: 184
+        samples: 184
+        patients: 184
+      - index: 6
+        aliquots: 202
+        samples: 202
+        patients: 185
+  - tag: 'tcga-gbm'
+    description: 'Glioblastoma Multiforme'
+    source: 0
+    program: 0
+    datatypes: [0, 1, 2, 3, 4, 5, 6]
+    aggregatedstats:
+      - aliquot: 3325
+        samples: 3260
+        patients: 2178
+    stats:
+      - index: 0
+        aliquots: 174
+        samples: 173
+        patients: 166
+      - index: 1
+        aliquots: 5
+        samples: 5
+        patients: 5
+      - index: 2
+        aliquots: 1149
+        samples: 1123
+        patients: 593
+      - index: 3
+        aliquots: 5
+        samples: 5
+        patients: 5
+      - index: 4
+        aliquots: 1149
+        samples: 1123
+        patients: 593
+      - index: 5
+        aliquots: 393
+        samples: 393
+        patients: 393
+      - index: 6
+        aliquots: 450
+        samples: 438
+        patients: 423
+  - tag: 'tcga-hnsc'
+    description: 'Head and Neck Squamous Cell Carcinoma'
+    source: 0
+    program: 0
+    datatypes: [0, 1, 2, 3, 4, 5, 6]
+    aggregatedstats:
+      - aliquot: 4938
+        samples: 4934
+        patients: 3627
+    stats:
+      - index: 0
+        aliquots: 546
+        samples: 546
+        patients: 501
+      - index: 1
+        aliquots: 569
+        samples: 569
+        patients: 524
+      - index: 2
+        aliquots: 1083
+        samples: 1081
+        patients: 521
+      - index: 3
+        aliquots: 569
+        samples: 569
+        patients: 524
+      - index: 4
+        aliquots: 1083
+        samples: 1081
+        patients: 521
+      - index: 5
+        aliquots: 508
+        samples: 508
+        patients: 508
+      - index: 6
+        aliquots: 580
+        samples: 580
+        patients: 528
+  - tag: 'tcga-kich'
+    description: 'Kidney Chromophobe'
+    source: 0
+    program: 0
+    datatypes: [0, 1, 2, 3, 4, 5, 6]
+    aggregatedstats:
+      - aliquot: 667
+        samples: 667
+        patients: 462
+    stats:
+      - index: 0
+        aliquots: 89
+        samples: 89
+        patients: 66
+      - index: 1
+        aliquots: 91
+        samples: 91
+        patients: 66
+      - index: 2
+        aliquots: 132
+        samples: 132
+        patients: 66
+      - index: 3
+        aliquots: 91
+        samples: 91
+        patients: 66
+      - index: 4
+        aliquots: 132
+        samples: 132
+        patients: 66
+      - index: 5
+        aliquots: 66
+        samples: 66
+        patients: 66
+      - index: 6
+        aliquots: 66
+        samples: 66
+        patients: 66
+  - tag: 'tcga-kirc'
+    description: 'Kidney Renal Clear Cell Carcinoma'
+    source: 0
+    program: 0
+    datatypes: [0, 1, 2, 3, 4, 5, 6]
+    aggregatedstats:
+      - aliquot: 5314
+        samples: 5147
+        patients: 3495
+    stats:
+      - index: 0
+        aliquots: 611
+        samples: 607
+        patients: 530
+      - index: 1
+        aliquots: 616
+        samples: 592
+        patients: 516
+      - index: 2
+        aliquots: 1118
+        samples: 1063
+        patients: 532
+      - index: 3
+        aliquots: 616
+        samples: 592
+        patients: 516
+      - index: 4
+        aliquots: 1118
+        samples: 1063
+        patients: 532
+      - index: 5
+        aliquots: 336
+        samples: 336
+        patients: 336
+      - index: 6
+        aliquots: 899
+        samples: 894
+        patients: 533
+  - tag: 'tcga-kirp'
+    description: 'Kidney Renal Papillary Cell Carcinoma'
+    source: 0
+    program: 0
+    datatypes: [0, 1, 2, 3, 4, 5, 6]
+    aggregatedstats:
+      - aliquot: 2812
+        samples: 2784
+        patients: 2023
+    stats:
+      - index: 0
+        aliquots: 321
+        samples: 321
+        patients: 289
+      - index: 1
+        aliquots: 326
+        samples: 326
+        patients: 291
+      - index: 2
+        aliquots: 608
+        samples: 594
+        patients: 290
+      - index: 3
+        aliquots: 326
+        samples: 326
+        patients: 291
+      - index: 4
+        aliquots: 608
+        samples: 594
+        patients: 290
+      - index: 5
+        aliquots: 281
+        samples: 281
+        patients: 281
+      - index: 6
+        aliquots: 342
+        samples: 342
+        patients: 291
+  - tag: 'tcga-laml'
+    description: 'Acute Myeloid Leukemia'
+    source: 0
+    program: 0
+    datatypes: [0, 1, 2, 3, 4, 5, 6]
+    aggregatedstats:
+      - aliquot: 1211
+        samples: 1211
+        patients: 927
+    stats:
+      - index: 0
+        aliquots: 151
+        samples: 151
+        patients: 151
+      - index: 1
+        aliquots: 103
+        samples: 103
+        patients: 103
+      - index: 2
+        aliquots: 285
+        samples: 285
+        patients: 143
+      - index: 3
+        aliquots: 103
+        samples: 103
+        patients: 103
+      - index: 4
+        aliquots: 285
+        samples: 285
+        patients: 143
+      - index: 5
+        aliquots: 144
+        samples: 144
+        patients: 144
+      - index: 6
+        aliquots: 140
+        samples: 140
+        patients: 140
+  - tag: 'tcga-lgg'
+    description: 'Brain Lower Grade Glioma'
+    source: 0
+    program: 0
+    datatypes: [0, 1, 2, 3, 4, 5, 6]
+    aggregatedstats:
+      - aliquot: 4670
+        samples: 4670
+        patients: 3588
+    stats:
+      - index: 0
+        aliquots: 529
+        samples: 529
+        patients: 511
+      - index: 1
+        aliquots: 530
+        samples: 530
+        patients: 512
+      - index: 2
+        aliquots: 1019
+        samples: 1019
+        patients: 514
+      - index: 3
+        aliquots: 530
+        samples: 530
+        patients: 512
+      - index: 4
+        aliquots: 1019
+        samples: 1019
+        patients: 514
+      - index: 5
+        aliquots: 509
+        samples: 509
+        patients: 509
+      - index: 6
+        aliquots: 534
+        samples: 534
+        patients: 516
+  - tag: 'tcga-lihc'
+    description: 'Liver Hepatocellular Carcinoma'
+    source: 0
+    program: 0
+    datatypes: [0, 1, 2, 3, 4, 5, 6]
+    aggregatedstats:
+      - aliquot: 3604
+        samples: 3602
+        patients: 2610
+    stats:
+      - index: 0
+        aliquots: 424
+        samples: 424
+        patients: 371
+      - index: 1
+        aliquots: 425
+        samples: 425
+        patients: 373
+      - index: 2
+        aliquots: 768
+        samples: 767
+        patients: 376
+      - index: 3
+        aliquots: 425
+        samples: 425
+        patients: 373
+      - index: 4
+        aliquots: 768
+        samples: 767
+        patients: 376
+      - index: 5
+        aliquots: 364
+        samples: 364
+        patients: 364
+      - index: 6
+        aliquots: 430
+        samples: 430
+        patients: 377
+  - tag: 'tcga-luad'
+    description: 'Lung Adenocarcinoma'
+    source: 0
+    program: 0
+    datatypes: [0, 1, 2, 3, 4, 5, 6]
+    aggregatedstats:
+      - aliquot: 5246
+        samples: 5147
+        patients: 3723
+    stats:
+      - index: 0
+        aliquots: 594
+        samples: 585
+        patients: 515
+      - index: 1
+        aliquots: 567
+        samples: 564
+        patients: 513
+      - index: 2
+        aliquots: 1147
+        samples: 1110
+        patients: 518
+      - index: 3
+        aliquots: 567
+        samples: 564
+        patients: 513
+      - index: 4
+        aliquots: 1147
+        samples: 1110
+        patients: 518
+      - index: 5
+        aliquots: 567
+        samples: 567
+        patients: 567
+      - index: 6
+        aliquots: 657
+        samples: 647
+        patients: 579
+  - tag: 'tcga-lusc'
+    description: 'Lung Squamous Cell Carcinoma'
+    source: 0
+    program: 0
+    datatypes: [0, 1, 2, 3, 4, 5, 6]
+    aggregatedstats:
+      - aliquot: 4780
+        samples: 4736
+        patients: 3460
+    stats:
+      - index: 0
+        aliquots: 551
+        samples: 550
+        patients: 501
+      - index: 1
+        aliquots: 523
+        samples: 523
+        patients: 478
+      - index: 2
+        aliquots: 1059
+        samples: 1038
+        patients: 504
+      - index: 3
+        aliquots: 523
+        samples: 523
+        patients: 478
+      - index: 4
+        aliquots: 1059
+        samples: 1038
+        patients: 504
+      - index: 5
+        aliquots: 492
+        samples: 492
+        patients: 492
+      - index: 6
+        aliquots: 573
+        samples: 572
+        patients: 503
+  - tag: 'tcga-meso'
+    description: 'Mesothelioma'
+    source: 0
+    program: 0
+    datatypes: [0, 1, 2, 3, 4, 5, 6]
+    aggregatedstats:
+      - aliquot: 775
+        samples: 775
+        patients: 603
+    stats:
+      - index: 0
+        aliquots: 86
+        samples: 86
+        patients: 86
+      - index: 1
+        aliquots: 87
+        samples: 87
+        patients: 87
+      - index: 2
+        aliquots: 173
+        samples: 173
+        patients: 87
+      - index: 3
+        aliquots: 87
+        samples: 87
+        patients: 87
+      - index: 4
+        aliquots: 173
+        samples: 173
+        patients: 87
+      - index: 5
+        aliquots: 82
+        samples: 82
+        patients: 82
+      - index: 6
+        aliquots: 87
+        samples: 87
+        patients: 87
+  - tag: 'tcga-ov'
+    description: 'Ovarian Serous Cystadenocarcinoma'
+    source: 0
+    program: 0
+    datatypes: [0, 1, 2, 3, 4, 5, 6]
+    aggregatedstats:
+      - aliquot: 4725
+        samples: 4697
+        patients: 3538
+    stats:
+      - index: 0
+        aliquots: 379
+        samples: 379
+        patients: 376
+      - index: 1
+        aliquots: 499
+        samples: 498
+        patients: 489
+      - index: 2
+        aliquots: 1143
+        samples: 1130
+        patients: 573
+      - index: 3
+        aliquots: 499
+        samples: 498
+        patients: 489
+      - index: 4
+        aliquots: 1146
+        samples: 1133
+        patients: 573
+      - index: 5
+        aliquots: 436
+        samples: 436
+        patients: 436
+      - index: 6
+        aliquots: 623
+        samples: 623
+        patients: 602
+  - tag: 'tcga-paad'
+    description: 'Pancreatic Adenocarcinoma'
+    source: 0
+    program: 0
+    datatypes: [0, 1, 2, 3, 4, 5, 6]
+    aggregatedstats:
+      - aliquot: 1659
+        samples: 1659
+        patients: 1267
+    stats:
+      - index: 0
+        aliquots: 182
+        samples: 182
+        patients: 177
+      - index: 1
+        aliquots: 183
+        samples: 183
+        patients: 178
+      - index: 2
+        aliquots: 368
+        samples: 368
+        patients: 185
+      - index: 3
+        aliquots: 183
+        samples: 183
+        patients: 178
+      - index: 4
+        aliquots: 368
+        samples: 368
+        patients: 185
+      - index: 5
+        aliquots: 180
+        samples: 180
+        patients: 180
+      - index: 6
+        aliquots: 195
+        samples: 195
+        patients: 184
+  - tag: 'tcga-pcpg'
+    description: 'Pheochromocytoma and Paraganglioma'
+    source: 0
+    program: 0
+    datatypes: [0, 1, 2, 3, 4, 5, 6]
+    aggregatedstats:
+      - aliquot: 1652
+        samples: 1652
+        patients: 1253
+    stats:
+      - index: 0
+        aliquots: 186
+        samples: 186
+        patients: 179
+      - index: 1
+        aliquots: 187
+        samples: 187
+        patients: 179
+      - index: 2
+        aliquots: 363
+        samples: 363
+        patients: 179
+      - index: 3
+        aliquots: 187
+        samples: 187
+        patients: 179
+      - index: 4
+        aliquots: 363
+        samples: 363
+        patients: 179
+      - index: 5
+        aliquots: 179
+        samples: 179
+        patients: 179
+      - index: 6
+        aliquots: 187
+        samples: 187
+        patients: 179
+  - tag: 'tcga-prad'
+    description: 'Prostate Adenocarcinoma'
+    source: 0
+    program: 0
+    datatypes: [0, 1, 2, 3, 4, 5, 6]
+    aggregatedstats:
+      - aliquot: 4778
+        samples: 4778
+        patients: 3473
+    stats:
+      - index: 0
+        aliquots: 551
+        samples: 551
+        patients: 495
+      - index: 1
+        aliquots: 551
+        samples: 551
+        patients: 494
+      - index: 2
+        aliquots: 1038
+        samples: 1038
+        patients: 498
+      - index: 3
+        aliquots: 551
+        samples: 551
+        patients: 494
+      - index: 4
+        aliquots: 1038
+        samples: 1038
+        patients: 498
+      - index: 5
+        aliquots: 496
+        samples: 496
+        patients: 496
+      - index: 6
+        aliquots: 553
+        samples: 553
+        patients: 498
+  - tag: 'tcga-read'
+    description: 'Rectum Adenocarcinoma'
+    source: 0
+    program: 0
+    datatypes: [0, 1, 2, 3, 4, 5, 6]
+    aggregatedstats:
+      - aliquot: 1456
+        samples: 1449
+        patients: 1122
+    stats:
+      - index: 0
+        aliquots: 177
+        samples: 177
+        patients: 167
+      - index: 1
+        aliquots: 165
+        samples: 165
+        patients: 161
+      - index: 2
+        aliquots: 317
+        samples: 314
+        patients: 166
+      - index: 3
+        aliquots: 165
+        samples: 165
+        patients: 161
+      - index: 4
+        aliquots: 317
+        samples: 314
+        patients: 166
+      - index: 5
+        aliquots: 136
+        samples: 136
+        patients: 136
+      - index: 6
+        aliquots: 179
+        samples: 178
+        patients: 165
+  - tag: 'tcga-sarc'
+    description: 'Sarcoma'
+    source: 0
+    program: 0
+    datatypes: [0, 1, 2, 3, 4, 5, 6]
+    aggregatedstats:
+      - aliquot: 2341
+        samples: 2335
+        patients: 1797
+    stats:
+      - index: 0
+        aliquots: 265
+        samples: 265
+        patients: 259
+      - index: 1
+        aliquots: 263
+        samples: 263
+        patients: 259
+      - index: 2
+        aliquots: 522
+        samples: 519
+        patients: 261
+      - index: 3
+        aliquots: 263
+        samples: 263
+        patients: 259
+      - index: 4
+        aliquots: 522
+        samples: 519
+        patients: 261
+      - index: 5
+        aliquots: 237
+        samples: 237
+        patients: 237
+      - index: 6
+        aliquots: 269
+        samples: 269
+        patients: 261
+  - tag: 'tcga-skcm'
+    description: 'Skin Cutaneous Melanoma'
+    source: 0
+    program: 0
+    datatypes: [0, 1, 2, 3, 4, 5, 6]
+    aggregatedstats:
+      - aliquot: 4197
+        samples: 4197
+        patients: 3242
+    stats:
+      - index: 0
+        aliquots: 472
+        samples: 472
+        patients: 468
+      - index: 1
+        aliquots: 452
+        samples: 452
+        patients: 448
+      - index: 2
+        aliquots: 939
+        samples: 939
+        patients: 470
+      - index: 3
+        aliquots: 452
+        samples: 452
+        patients: 448
+      - index: 4
+        aliquots: 939
+        samples: 939
+        patients: 470
+      - index: 5
+        aliquots: 468
+        samples: 468
+        patients: 468
+      - index: 6
+        aliquots: 475
+        samples: 475
+        patients: 470
+  - tag: 'tcga-stad'
+    description: 'Stomach Adenocarcinoma'
+    source: 0
+    program: 0
+    datatypes: [0, 1, 2, 3, 4, 5, 6]
+    aggregatedstats:
+      - aliquot: 4180
+        samples: 4080
+        patients: 3018
+    stats:
+      - index: 0
+        aliquots: 407
+        samples: 407
+        patients: 380
+      - index: 1
+        aliquots: 491
+        samples: 477
+        patients: 436
+      - index: 2
+        aliquots: 906
+        samples: 906
+        patients: 443
+      - index: 3
+        aliquots: 491
+        samples: 477
+        patients: 436
+      - index: 4
+        aliquots: 906
+        samples: 906
+        patients: 443
+      - index: 5
+        aliquots: 437
+        samples: 437
+        patients: 437
+      - index: 6
+        aliquots: 470
+        samples: 470
+        patients: 443
+  - tag: 'tcga-tgct'
+    description: 'Testicular Germ Cell Tumors'
+    source: 0
+    program: 0
+    datatypes: [0, 1, 2, 3, 4, 5, 6]
+    aggregatedstats:
+      - aliquot: 1311
+        samples: 1311
+        patients: 1013
+    stats:
+      - index: 0
+        aliquots: 156
+        samples: 156
+        patients: 150
+      - index: 1
+        aliquots: 156
+        samples: 156
+        patients: 150
+      - index: 2
+        aliquots: 271
+        samples: 271
+        patients: 134
+      - index: 3
+        aliquots: 156
+        samples: 156
+        patients: 150
+      - index: 4
+        aliquots: 271
+        samples: 271
+        patients: 134
+      - index: 5
+        aliquots: 145
+        samples: 145
+        patients: 145
+      - index: 6
+        aliquots: 156
+        samples: 156
+        patients: 150
+  - tag: 'tcga-thca'
+    description: 'Thyroid Carcinoma'
+    source: 0
+    program: 0
+    datatypes: [0, 1, 2, 3, 4, 5, 6]
+    aggregatedstats:
+      - aliquot: 4827
+        samples: 4827
+        patients: 3523
+    stats:
+      - index: 0
+        aliquots: 568
+        samples: 568
+        patients: 502
+      - index: 1
+        aliquots: 573
+        samples: 573
+        patients: 506
+      - index: 2
+        aliquots: 1025
+        samples: 1025
+        patients: 505
+      - index: 3
+        aliquots: 573
+        samples: 573
+        patients: 506
+      - index: 4
+        aliquots: 1025
+        samples: 1025
+        patients: 505
+      - index: 5
+        aliquots: 492
+        samples: 492
+        patients: 492
+      - index: 6
+        aliquots: 571
+        samples: 571
+        patients: 507
+  - tag: 'tcga-thym'
+    description: 'Thymoma'
+    source: 0
+    program: 0
+    datatypes: [0, 1, 2, 3, 4, 5, 6]
+    aggregatedstats:
+      - aliquot: 1120
+        samples: 1120
+        patients: 862
+    stats:
+      - index: 0
+        aliquots: 121
+        samples: 121
+        patients: 119
+      - index: 1
+        aliquots: 126
+        samples: 126
+        patients: 124
+      - index: 2
+        aliquots: 249
+        samples: 249
+        patients: 124
+      - index: 3
+        aliquots: 126
+        samples: 126
+        patients: 124
+      - index: 4
+        aliquots: 249
+        samples: 249
+        patients: 124
+      - index: 5
+        aliquots: 123
+        samples: 123
+        patients: 123
+      - index: 6
+        aliquots: 126
+        samples: 126
+        patients: 124
+  - tag: 'tcga-ucec'
+    description: 'Uterine Corpus Endometrial Carcinoma'
+    source: 0
+    program: 0
+    datatypes: [0, 1, 2, 3, 4, 5, 6]
+    aggregatedstats:
+      - aliquot: 5066
+        samples: 5036
+        patients: 3838
+    stats:
+      - index: 0
+        aliquots: 587
+        samples: 583
+        patients: 555
+      - index: 1
+        aliquots: 579
+        samples: 575
+        patients: 550
+      - index: 2
+        aliquots: 1094
+        samples: 1087
+        patients: 547
+      - index: 3
+        aliquots: 579
+        samples: 575
+        patients: 550
+      - index: 4
+        aliquots: 1094
+        samples: 1087
+        patients: 547
+      - index: 5
+        aliquots: 530
+        samples: 530
+        patients: 530
+      - index: 6
+        aliquots: 603
+        samples: 599
+        patients: 559
+  - tag: 'tcga-ucs'
+    description: 'Uterine Carcinosarcoma'
+    source: 0
+    program: 0
+    datatypes: [0, 1, 2, 3, 4, 5, 6]
+    aggregatedstats:
+      - aliquot: 504
+        samples: 504
+        patients: 398
+    stats:
+      - index: 0
+        aliquots: 56
+        samples: 56
+        patients: 56
+      - index: 1
+        aliquots: 57
+        samples: 57
+        patients: 57
+      - index: 2
+        aliquots: 110
+        samples: 110
+        patients: 57
+      - index: 3
+        aliquots: 57
+        samples: 57
+        patients: 57
+      - index: 4
+        aliquots: 110
+        samples: 110
+        patients: 57
+      - index: 5
+        aliquots: 57
+        samples: 57
+        patients: 57
+      - index: 6
+        aliquots: 57
+        samples: 57
+        patients: 57
+  - tag: 'tcga-uvm'
+    description: 'Uveal Melanoma'
+    source: 0
+    program: 0
+    datatypes: [0, 1, 2, 3, 4, 5, 6]
+    aggregatedstats:
+      - aliquot: 720
+        samples: 720
+        patients: 560
+    stats:
+      - index: 0
+        aliquots: 80
+        samples: 80
+        patients: 80
+      - index: 1
+        aliquots: 80
+        samples: 80
+        patients: 80
+      - index: 2
+        aliquots: 160
+        samples: 160
+        patients: 80
+      - index: 3
+        aliquots: 80
+        samples: 80
+        patients: 80
+      - index: 4
+        aliquots: 160
+        samples: 160
+        patients: 80
+      - index: 5
+        aliquots: 80
+        samples: 80
+        patients: 80
+      - index: 6
+        aliquots: 80
+        samples: 80
+        patients: 80
+...

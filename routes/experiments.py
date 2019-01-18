@@ -360,8 +360,50 @@ def experiment_source_program_tumor_datatype_aliquots(source, program, tumor, da
 
 @blueprint.route("/experiment/source/<source>/program/<program>/tumor/<tumor>/datatype/<datatype>/aliquot/<aliquot>/all")
 def experiment_source_program_tumor_datatype_aliquot_all(source, program, tumor, datatype, aliquot):
-    data = { 'data': [ ] }
-    # TODO
+    data = { 'data': [ ] }
+    mongodb_client = getClient()
+    # TODO: missed 'source' and 'program' in find_attributes
+    elem_attribute = ""
+    # TODO: excluded 'copynumbersegment' and 'maskedcopynumbersegment'
+    annotation_collection = ""
+    fields = {
+        '_id': 0,
+        'tumor': 0,
+        'aliquot': 0,
+        'source': 0
+    }
+    if datatype == "geneexpressionquantification":
+        elem_attribute = "ensembl_gene_id"
+        annotation_collection = "annotation_geneexpression"
+        # exclude obj fields
+        fields['annotations._id'] = 0
+        # considering as_field = 'annotations'
+        # exclude annotation fields
+        fields['annotations.ensembl_gene_id'] = 0
+    elif datatype == "methylationbetavalue":
+        elem_attribute = "composite_element_ref"
+        annotation_collection = "annotation_humanmethylation"
+        # exclude obj fields
+        fields['annotations._id'] = 0
+        # considering as_field = 'annotations'
+        # exclude annotation fields
+        fields['annotations.composite_element_ref'] = 0        
+    elif datatype == "maskedsomaticmutation":
+        elem_attribute = "gene_symbol"
+    elif datatype == "mirnaexpressionquantification" or datatype == "isoformexpressionquantification":
+        elem_attribute = "mirna_id"
+    
+    if elem_attribute != "":
+        if datatype == "geneexpressionquantification" or datatype == "methylationbetavalue":
+            as_field = "annotations"
+            match_field = {
+                'source': source,
+                'tumor': tumor,
+                'aliquot': aliquot,
+            }
+            data['data'] = get_documents_by_join(mongodb_client, "experiment_"+datatype, annotation_collection, elem_attribute, elem_attribute, as_field, match_field, fields)
+        else:
+            data['data'] = get_documents(mongodb_client, "experiment"+datatype, find_attributes={ 'tumor': tumor, 'aliquot': aliquot }, find_criteria={ 'tumor':0, 'aliquot':0, 'source':0, '_id':0 })
     js = json.dumps(data, indent=4, sort_keys=True);
     resp = Response(js, status=200, mimetype='application/json');
     return resp;
@@ -369,7 +411,25 @@ def experiment_source_program_tumor_datatype_aliquot_all(source, program, tumor,
 @blueprint.route("/experiment/source/<source>/program/<program>/tumor/<tumor>/datatype/<datatype>/aliquot/<aliquot>/coordinates")
 def experiment_source_program_tumor_datatype_aliquot_coordinates(source, program, tumor, datatype, aliquot):
     data = { 'data': [ ] }
-    # TODO
+    collection_name = ""
+    collection_from_name = ""
+    fields = { '_id':0 }
+    if datatype = "methylationbetavalue":
+        collection_name = "annotation_humanmethylation"
+        collection_from_name = "experiment_"+datatype
+        fields['annotations.chrom'] = 1
+        fields['annotations.start'] = 1
+        fields['annotations.end'] = 1
+        fields['annotations.strand'] = 1
+    else:
+        if datatype == "geneexpressionquantification":
+            collection_name = "annotation_geneexpression"
+        collection_name = "experiment_"+datatype
+        fields['chrom'] = 1
+        fields['start'] = 1
+        fields['end'] = 1
+        fields['strand'] = 1
+
     js = json.dumps(data, indent=4, sort_keys=True);
     resp = Response(js, status=200, mimetype='application/json');
     return resp;
@@ -389,10 +449,29 @@ def experiment_source_program_tumor_datatype_aliquot_elemid_all(source, program,
     # TODO: missed 'source' and 'program' in find_attributes
     elem_attribute = ""
     # TODO: excluded 'copynumbersegment' and 'maskedcopynumbersegment'
+    annotation_collection = ""
+    fields = {
+        '_id': 0,
+        'tumor': 0,
+        'aliquot': 0,
+        'source': 0
+    }
     if datatype == "geneexpressionquantification":
         elem_attribute = "ensembl_gene_id"
+        annotation_collection = "annotation_geneexpression"
+        # exclude obj fields
+        fields['annotations._id'] = 0
+        # considering as_field = 'annotations'
+        # exclude annotation fields
+        fields['annotations.ensembl_gene_id'] = 0
     elif datatype == "methylationbetavalue":
         elem_attribute = "composite_element_ref"
+        annotation_collection = "annotation_humanmethylation"
+        # exclude obj fields
+        fields['annotations._id'] = 0
+        # considering as_field = 'annotations'
+        # exclude annotation fields
+        fields['annotations.composite_element_ref'] = 0        
     elif datatype == "maskedsomaticmutation":
         elem_attribute = "gene_symbol"
     elif datatype == "mirnaexpressionquantification" or datatype == "isoformexpressionquantification":
@@ -400,7 +479,14 @@ def experiment_source_program_tumor_datatype_aliquot_elemid_all(source, program,
     
     if elem_attribute != "":
         if datatype == "geneexpressionquantification" or datatype == "methylationbetavalue":
-            # TODO: join experiment collection with annotation collection on 'elem_attribute'
+            as_field = "annotations"
+            match_field = {
+                'source': source,
+                'tumor': tumor,
+                'aliquot': aliquot,
+                elem_attribute: elem_id
+            }
+            # aggregate example (shell)
             '''
                 db.experiment_collection.aggregate([
                     {
@@ -414,8 +500,9 @@ def experiment_source_program_tumor_datatype_aliquot_elemid_all(source, program,
                     }
                 ])
             '''
+            data['data'] = get_documents_by_join(mongodb_client, "experiment_"+datatype, annotation_collection, elem_attribute, elem_attribute, as_field, match_field, fields)
         else:
-            data['data'] = get_documents(mongodb_client, "experiment"+datatype, find_attributes={ 'tumor': tumor, 'aliquot': aliquot, '\''+elem_attribute+'\'': elem_id })
+            data['data'] = get_documents(mongodb_client, "experiment"+datatype, find_attributes={ 'tumor': tumor, 'aliquot': aliquot, elem_attribute: elem_id }, find_criteria={ 'tumor':0, 'aliquot':0, 'source':0, '_id':0 })
     js = json.dumps(data, indent=4, sort_keys=True);
     resp = Response(js, status=200, mimetype='application/json');
     return resp;

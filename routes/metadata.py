@@ -18,7 +18,7 @@ def metadata_sources():
 @blueprint.route("/metadata/source/<source>/attribute/<attribute>/all")
 def metadata_source_attribute_all(source, attribute):
     mongodb_client = getClient()
-    values = get_documents(mongodb_client, "metadata", find_attributes={ 'source': source }, find_criteria={ '\''+attribute+'\'':1 })
+    values = get_documents(mongodb_client, "metadata", find_attributes={ 'source': source }, find_criteria={ attribute:1 })
     parsed_values = [ ]
     for val in values:
         parsed_values.append( val[attribute] )
@@ -34,7 +34,7 @@ def metadata_source_attribute_all(source, attribute):
 @blueprint.route("/metadata/source/<source>/attribute/<attribute>/value/<value>/aliquots")
 def metadata_source_attribute_value(source, attribute, value):
     mongodb_client = getClient()
-    values = get_documents(mongodb_client, "metadata", find_attributes={ 'source': source, '\''+attribute+'\'': value }, find_criteria={ 'gdc__program__name':1, 'gdc__project__project_id':1, 'gdc__type':1, 'gdc__aliquots__aliquot_id':1 })
+    values = get_documents(mongodb_client, "metadata", find_attributes={ 'source': source, attribute: value }, find_criteria={ 'gdc__program__name':1, 'gdc__project__project_id':1, 'gdc__type':1, 'gdc__aliquots__aliquot_id':1 })
     hits = [ ]
     for val in values:
         hits.append( "/experiment/source/"+source+"/program/"+val["gdc__program__name"]+"/tumor/"+val["gdc__project__project_id"]+"/datatype/"+val["gdc__type"]+"/aliquot/"+val["gdc__aliquots__aliquot_id"]+"/all" )
@@ -51,7 +51,7 @@ def metadata_source_attribute_value(source, attribute, value):
 @blueprint.route("/metadata/attribute/<attribute>/all")
 def metadata_attribute_all(attribute):
     mongodb_client = getClient()
-    values = get_documents(mongodb_client, "metadata", find_criteria={ '\''+attribute+'\'':1 })
+    values = get_documents(mongodb_client, "metadata", find_criteria={ attribute:1 })
     parsed_values = [ ]
     for val in values:
         parsed_values.append( val[attribute] )
@@ -66,7 +66,7 @@ def metadata_attribute_all(attribute):
 @blueprint.route("/metadata/attribute/<attribute>/value/<value>/aliquots")
 def metadata_attribute_value(attribute, value):
     mongodb_client = getClient()
-    values = get_documents(mongodb_client, "metadata", find_attributes={ '\''+attribute+'\'': value }, find_criteria={ 'source':1, 'gdc__program__name':1, 'gdc__project__project_id':1, 'gdc__type':1, 'gdc__aliquots__aliquot_id':1 })
+    values = get_documents(mongodb_client, "metadata", find_attributes={ attribute: value }, find_criteria={ 'source':1, 'gdc__program__name':1, 'gdc__project__project_id':1, 'gdc__type':1, 'gdc__aliquots__aliquot_id':1 })
     hits = [ ]
     for val in values:
         hits.append( "/experiment/source/"+val["source"]+"/program/"+val["gdc__program__name"]+"/tumor/"+val["gdc__project__project_id"]+"/datatype/"+val["gdc__type"]+"/aliquot/"+val["gdc__aliquots__aliquot_id"]+"/all" )

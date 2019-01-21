@@ -47,20 +47,26 @@ def getClient():
     return MongoClient(mongodb_host, mongodb_port);
 
 # get stuff
-def get_documents(client, collection_id, find_attributes={}, find_criteria={}, max_attempts=5, display_obj_ids=0):
+def get_documents(client, collection_id, find_attributes={}, find_criteria={}, get_one_element=None, max_attempts=5, display_obj_ids=0):
     documents = [ ];
     find_criteria['_id'] = display_obj_ids;
     if client is not None:
         db = client[mongodb_db_name];
         collection = db[collection_id];
         try:
-            for doc in collection.find( find_attributes, find_criteria ):
-                documents.append( doc )
+            if get_one_element is None:
+                for doc in collection.find( find_attributes, find_criteria ):
+                    documents.append( doc )
+            else:
+                documents_tmp = set()
+                for doc in collection.find( find_attributes, find_criteria ):
+                    documents_tmp.add( doc[ get_one_element ] )
+                documents = list(documents_tmp)
         except Exception as e:
             client.close();
             client = getClient();
             if max_attempts > 0:
-                return get_documents(client, collection_id, find_criteria={}, max_attempts=max_attempts-1);
+                return get_documents(client, collection_id, find_attributes=find_attributes, find_criteria=find_criteria, get_one_element=get_one_element, max_attempts=max_attempts-1, display_obj_ids=display_obj_ids);
             else:
                 print str(e);
                 return [ ];

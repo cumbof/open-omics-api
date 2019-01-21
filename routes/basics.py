@@ -8,8 +8,8 @@ config = None;
 with open("./config.yaml", 'r') as cfg:
     config = yaml.load(cfg);
 
-app_name = str(config.get("app", "name"));
-app_version = str(config.get("app", "version"));
+app_name = str(config["app"]["name"]);
+app_version = str(config["app"]["version"]);
 
 @blueprint.route("/routes")
 def routes():

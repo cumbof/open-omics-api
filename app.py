@@ -11,10 +11,10 @@ if __name__ == '__main__':
     with open("./config.yaml", 'r') as cfg:
         config = yaml.load(cfg);
     # create tmp and log dirs if they do not exist
-    tmp_dir = str(config.get("app", "tmp_dir"));
+    tmp_dir = str(config["app"]["tmp_dir"]);
     if not os.path.exists(tmp_dir):
         os.makedirs(tmp_dir);
-    log_dir = str(config.get("app", "log_dir"));
+    log_dir = str(config["app"]["log_dir"]);
     if not os.path.exists(log_dir):
         os.makedirs(log_dir);
 
@@ -33,9 +33,9 @@ if __name__ == '__main__':
     app.register_blueprint(blueprint); # retrieve and register routes from __init__py in routes dir
     
     # if debug=True -> it will print out possible Python errors on the web page
-    app_debug = str(config.get("app", "debug"));
-    app_host = str(config.get("app", "host"));
-    app_port = int(config.get("app", "port"));
+    app_debug = str(config["app"]["debug"]);
+    app_host = str(config["app"]["host"]);
+    app_port = int(config["app"]["port"]);
     if app_debug.lower().strip() == "true":
         app_debug = True;
     else:
@@ -43,7 +43,7 @@ if __name__ == '__main__':
     # if the service is in production [debug=False]
     if not app_debug:
         # create log directory
-        main_log_dir = config.get("app", "log_dir");
+        main_log_dir = config["app"]["log_dir"];
         # log dir name: (year)(month)(day)(hour)(minute)(second)
         #timestamp = datetime.datetime.now().strftime('%Y%m%d%H%M%S');
         timestamp = datetime.datetime.now(tz=pytz.utc).isoformat();
@@ -52,8 +52,8 @@ if __name__ == '__main__':
             os.makedirs(current_log_dir);
         # init log handler
         log_file_path = os.path.join(current_log_dir, 'app.log');
-        log_max_bytes = int(config.get("app", "log_max_bytes"));
-        log_backup_count = int(config.get("app", "log_backup_count"));
+        log_max_bytes = int(config["app"]["log_max_bytes"]);
+        log_backup_count = int(config["app"]["log_backup_count"]);
         log_handler = RotatingFileHandler(log_file_path, maxBytes=log_max_bytes, backupCount=log_backup_count);
         log_handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'));
         log_handler.setLevel(logging.INFO);

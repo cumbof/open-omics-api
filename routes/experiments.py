@@ -1,3 +1,4 @@
+import yaml
 from flask import request, Response, session
 from . import blueprint
 
@@ -8,7 +9,7 @@ with open("./data.yaml", 'r') as dmap:
 
 @blueprint.route("/experiment/sources")
 def experiment_sources():
-    data = { 'sources': [ ] }
+    data = { 'sources': [ ] }
     for source in data_map['sources']:
         data['sources'].append( {
             'id': source['id'],
@@ -20,7 +21,7 @@ def experiment_sources():
 
 @blueprint.route("/experiment/datatypes")
 def experiment_datatypes():
-    data = { 'datatypes': [ ] }
+    data = { 'datatypes': [ ] }
     for datatype in data_map['datatypes']:
         data['datatypes'].append( {
             'id': datatype['id'],
@@ -32,7 +33,7 @@ def experiment_datatypes():
 
 @blueprint.route("/experiment/tumors")
 def experiment_tumors():
-    data = { 'tumors': [ ] }
+    data = { 'tumors': [ ] }
     for tumor in data_map['tumors']:
         source_index = tumor['source']
         source_id = ''
@@ -70,7 +71,7 @@ def experiment_tumors():
             'program': {
                 'id': program_id,
                 'description': program_description
-            }
+            },
             'datatypes': datatypes
         } )
     js = json.dumps(data, indent=4, sort_keys=True);
@@ -79,7 +80,7 @@ def experiment_tumors():
 
 @blueprint.route("/experiment/programs")
 def experiment_programs():
-    data = { 'programs': [ ] }
+    data = { 'programs': [ ] }
     for program in data_map['programs']:
         source_index = program['source']
         source_id = ''
@@ -105,7 +106,7 @@ def experiment_programs():
 def experiment_source_programs(source):
     data = { 
         'source': source,
-        'programs': [ ] 
+        'programs': [ ]
     }
     for program in data_map['programs']:
         current_source_index = program['source']
@@ -123,7 +124,7 @@ def experiment_source_programs(source):
 def experiment_source_aliquots(source):
     data = { 
         'source': source,
-        'aliquots': [ ] 
+        'aliquots': [ ]
     }
     source_index = -1
     for source_obj in data_map['sources']:
@@ -148,7 +149,7 @@ def experiment_source_aliquots(source):
 def experiment_source_datatypes(source):
     data = { 
         'source': source,
-        'datatypes': [ ] 
+        'datatypes': [ ]
     }
     source_index = -1
     for source_obj in data_map['sources']:
@@ -178,7 +179,7 @@ def experiment_source_datatypes(source):
 def experiment_source_tumors(source):
     data = { 
         'source': source,
-        'tumors': [ ] 
+        'tumors': [ ]
     }
     source_index = -1
     for source_obj in data_map['sources']:
@@ -401,7 +402,7 @@ def experiment_source_program_tumor_datatype_aliquot_all(source, program, tumor,
         'tumor': tumor,
         'datatype': datatype,
         'aliquot': aliquot,
-        'data': [ ] 
+        'data': [ ]
     }
     mongodb_client = getClient()
     # TODO: missed 'source' and 'program' in find_attributes
@@ -458,13 +459,13 @@ def experiment_source_program_tumor_datatype_aliquot_coordinates(source, program
         'tumor': tumor,
         'datatype': datatype,
         'aliquot': aliquot,
-        'coordinates': [ ] 
+        'coordinates': [ ]
     }
     collection_name = ""
     collection_from_name = ""
     join_field = ""
     fields = { '_id':0 }
-    if datatype = "methylationbetavalue":
+    if datatype == "methylationbetavalue":
         collection_name = "annotation_humanmethylation"
         collection_from_name = "experiment_"+datatype
         join_field = "composite_element_ref"
@@ -510,7 +511,7 @@ def experiment_source_program_tumor_datatype_aliquot_ids(source, program, tumor,
         'tumor': tumor,
         'datatype': datatype,
         'aliquot': aliquot,
-        'ids': [ ] 
+        'ids': [ ]
     }
     mongodb_client = getClient()
     # TODO: missed 'source' and 'program' in find_attributes
@@ -539,7 +540,7 @@ def experiment_source_program_tumor_datatype_aliquot_elemid_all(source, program,
         'tumor': tumor,
         'datatype': datatype,
         'aliquot': aliquot,
-        'data': [ ] 
+        'data': [ ]
     }
     mongodb_client = getClient()
     # TODO: missed 'source' and 'program' in find_attributes

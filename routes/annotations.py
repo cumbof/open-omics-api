@@ -6,7 +6,7 @@ def annotation_list():
     data = {
         'annotations': [
             {
-                'annotation': 'geneexpression'
+                'annotation': 'geneexpression',
                 'description': 'Gene Expression'
             },
             {

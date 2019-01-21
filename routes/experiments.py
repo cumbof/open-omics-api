@@ -449,10 +449,9 @@ def experiment_source_program_tumor_datatype_aliquot_ids(source, program, tumor,
         elem_attribute = "gene_symbol"
     elif datatype == "mirnaexpressionquantification" or datatype == "isoformexpressionquantification":
         elem_attribute = "mirna_id"
-    ids = set()
-    documents = get_documents(mongodb_client, "experiment"+datatype, find_attributes={ 'tumor': tumor, 'aliquot': aliquot }, find_criteria={ elem_attribute:1 })
-    ids.add( doc[elem_attribute] for doc in documents )
-    data['ids'] = list(ids)
+    data = {
+        'ids': get_documents(mongodb_client, "experiment"+datatype, find_attributes={ 'tumor': tumor, 'aliquot': aliquot }, find_criteria={ elem_attribute:1 }, get_one_element=elem_attribute)
+    }
     js = json.dumps(data, indent=4, sort_keys=True);
     resp = Response(js, status=200, mimetype='application/json');
     return resp;

@@ -1,3 +1,5 @@
+import json
+from mongodb_driver import *
 from flask import request, Response, session
 from . import blueprint
 
@@ -24,7 +26,7 @@ def annotation_all(annotation_name):
     mongodb_client = getClient()
     data = {
         'annotation': annotation_name,
-        'annotation': get_documents(mongodb_client, annotation_name)
+        'data': get_documents(mongodb_client, annotation_name)
     }
     js = json.dumps(data, indent=4, sort_keys=True);
     resp = Response(js, status=200, mimetype='application/json');

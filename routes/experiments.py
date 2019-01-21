@@ -1,4 +1,5 @@
-import yaml
+import json, yaml
+from mongodb_driver import *
 from flask import request, Response, session
 from . import blueprint
 
@@ -62,7 +63,7 @@ def experiment_tumors():
                     } )
                     break
         data['tumors'].append( {
-            'id': tumor['id'],
+            'id': tumor['tag'],
             'description': tumor['description'],
             'source': {
                 'id': source_id,
@@ -132,7 +133,7 @@ def experiment_source_aliquots(source):
             source_index = source_obj['index']
             break
     if source_index > -1:
-        tumors_related_to_source = [ tumor['id'] for tumor in data_map['tumors'] if tumor['source'] == source_index ]
+        tumors_related_to_source = [ tumor['tag'] for tumor in data_map['tumors'] if tumor['source'] == source_index ]
         # TODO: get only available data types for those particular tumors
         collections = [ 'experiment_'+datatype['id'] for datatype in data_map['datatypes'] ]
         mongodb_client = getClient()
@@ -190,7 +191,7 @@ def experiment_source_tumors(source):
         for tumor in data_map['tumors']:
             if tumor['source'] == source_index:
                 data['tumors'].append( {
-                    'id': tumor['id'],
+                    'id': tumor['tag'],
                     'description': tumor['description']
                 } )
     js = json.dumps(data, indent=4, sort_keys=True);
@@ -215,7 +216,7 @@ def experiment_source_program_aliquots(source, program):
             program_index = program_obj['index']
             break
     if source_index > -1 and program_index > -1:
-        tumors_related_to_source = [ tumor['id'] for tumor in data_map['tumors'] if tumor['source'] == source_index and tumor['program'] == program_index ]
+        tumors_related_to_source = [ tumor['tag'] for tumor in data_map['tumors'] if tumor['source'] == source_index and tumor['program'] == program_index ]
         # TODO: get only available data types for those particular tumors
         collections = [ 'experiment_'+datatype['id'] for datatype in data_map['datatypes'] ]
         mongodb_client = getClient()
@@ -280,10 +281,9 @@ def experiment_source_program_tumors(source, program):
         for tumor in data_map['tumors']:
             if tumor['source'] == source_index and tumor['program'] == program_index:
                 data['tumors'].append( {
-                    'id': tumor['id'],
+                    'id': tumor['tag'],
                     'description': tumor['description']
                 } )
-            break
     js = json.dumps(data, indent=4, sort_keys=True);
     resp = Response(js, status=200, mimetype='application/json');
     return resp;

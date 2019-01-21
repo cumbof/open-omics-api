@@ -36,7 +36,7 @@ def terminateMongod(mongod):
 # True:running, False:terminated
 def isMongodAlive(mongod):
     try:
-        if mongod.poll() == None:
+        if 'ok' in mongod.admin.command('ping'):
             return True;
     except:
         print "unable to communicate with mongod.. is it still alive?"

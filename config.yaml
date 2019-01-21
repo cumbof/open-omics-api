@@ -17,6 +17,4 @@ mongodb:
   host: 'localhost'
   port: 27017
   db_name: 'og'
-  bulk_size_elem: 4096
-  bulk_size_dict: 1
 ...

@@ -436,8 +436,22 @@ def experiment_source_program_tumor_datatype_aliquot_coordinates(source, program
 
 @blueprint.route("/experiment/source/<source>/program/<program>/tumor/<tumor>/datatype/<datatype>/aliquot/<aliquot>/ids")
 def experiment_source_program_tumor_datatype_aliquot_ids(source, program, tumor, datatype, aliquot):
-    data = { 'data': [ ] }
-    # TODO
+    data = { 'ids': [ ] }
+    mongodb_client = getClient()
+    # TODO: missed 'source' and 'program' in find_attributes
+    elem_attribute = ""
+    # TODO: ids for 'copynumbersegment' and 'maskedcopynumbersegment' ?
+    if datatype == "geneexpressionquantification":
+        elem_attribute = "ensembl_gene_id"
+    elif datatype == "methylationbetavalue":
+        elem_attribute = "composite_element_ref"      
+    elif datatype == "maskedsomaticmutation":
+        elem_attribute = "gene_symbol"
+    elif datatype == "mirnaexpressionquantification" or datatype == "isoformexpressionquantification":
+        elem_attribute = "mirna_id"
+    data = {
+        'ids': get_documents(mongodb_client, "experiment"+datatype, find_attributes={ 'tumor': tumor, 'aliquot': aliquot }, find_criteria={ elem_attribute:1 }, get_one_element=elem_attribute)
+    }
     js = json.dumps(data, indent=4, sort_keys=True);
     resp = Response(js, status=200, mimetype='application/json');
     return resp;

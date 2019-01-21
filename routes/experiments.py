@@ -103,7 +103,10 @@ def experiment_programs():
 
 @blueprint.route("/experiment/source/<source>/programs")
 def experiment_source_programs(source):
-    data = { 'programs': [ ] }
+    data = { 
+        'source': source,
+        'programs': [ ] 
+    }
     for program in data_map['programs']:
         current_source_index = program['source']
         for source in data_map['sources']:
@@ -118,7 +121,10 @@ def experiment_source_programs(source):
 
 @blueprint.route("/experiment/source/<source>/aliquots")
 def experiment_source_aliquots(source):
-    data = { 'aliquots': [ ] }
+    data = { 
+        'source': source,
+        'aliquots': [ ] 
+    }
     source_index = -1
     for source_obj in data_map['sources']:
         if source_obj['id'] == source:
@@ -141,7 +147,10 @@ def experiment_source_aliquots(source):
 
 @blueprint.route("/experiment/source/<source>/datatypes")
 def experiment_source_datatypes(source):
-    data = { 'datatypes': [ ] }
+    data = { 
+        'source': source,
+        'datatypes': [ ] 
+    }
     source_index = -1
     for source_obj in data_map['sources']:
         if source_obj['id'] == source:
@@ -168,7 +177,10 @@ def experiment_source_datatypes(source):
 
 @blueprint.route("/experiment/source/<source>/tumors")
 def experiment_source_tumors(source):
-    data = { 'tumors': [ ] }
+    data = { 
+        'source': source,
+        'tumors': [ ] 
+    }
     source_index = -1
     for source_obj in data_map['sources']:
         if source_obj['id'] == source:
@@ -187,7 +199,11 @@ def experiment_source_tumors(source):
 
 @blueprint.route("/experiment/source/<source>/program/<program>/aliquots")
 def experiment_source_program_aliquots(source, program):
-    data = { 'aliquots': [ ] }
+    data = { 
+        'source': source,
+        'program': program,
+        'aliquots': [ ]
+    }
     source_index = -1
     for source_obj in data_map['sources']:
         if source_obj['id'] == source:
@@ -215,7 +231,11 @@ def experiment_source_program_aliquots(source, program):
 
 @blueprint.route("/experiment/source/<source>/program/<program>/datatypes")
 def experiment_source_program_datatypes(source, program):
-    data = { 'datatypes': [ ] }
+    data = { 
+        'source': source,
+        'program': program,
+        'datatypes': [ ]
+    }
     source_index = -1
     for source_obj in data_map['sources']:
         if source_obj['id'] == source:
@@ -242,7 +262,11 @@ def experiment_source_program_datatypes(source, program):
 
 @blueprint.route("/experiment/source/<source>/program/<program>/tumors")
 def experiment_source_program_tumors(source, program):
-    data = { 'tumors': [ ] }
+    data = { 
+        'source': source,
+        'program': program,
+        'tumors': [ ]
+    }
     source_index = -1
     for source_obj in data_map['sources']:
         if source_obj['id'] == source:
@@ -267,7 +291,12 @@ def experiment_source_program_tumors(source, program):
 
 @blueprint.route("/experiment/source/<source>/program/<program>/tumor/<tumor>/datatypes")
 def experiment_source_program_tumor_datatypes(source, program, tumor):
-    data = { 'datatypes': [ ] }
+    data = { 
+        'source': source,
+        'program': program,
+        'tumor': tumor,
+        'datatypes': [ ]
+    }
     source_index = -1
     for source_obj in data_map['sources']:
         if source_obj['id'] == source:
@@ -299,7 +328,12 @@ def experiment_source_program_tumor_datatypes(source, program, tumor):
 
 @blueprint.route("/experiment/source/<source>/program/<program>/tumor/<tumor>/aliquots")
 def experiment_source_program_tumor_aliquots(source, program, tumor):
-    data = { 'aliquots': [ ] }
+    data = { 
+        'source': source,
+        'program': program,
+        'tumor': tumor,
+        'aliquots': [ ]
+    }
     source_index = -1
     for source_obj in data_map['sources']:
         if source_obj['id'] == source:
@@ -327,7 +361,13 @@ def experiment_source_program_tumor_aliquots(source, program, tumor):
 
 @blueprint.route("/experiment/source/<source>/program/<program>/tumor/<tumor>/datatype/<datatype>/aliquots")
 def experiment_source_program_tumor_datatype_aliquots(source, program, tumor, datatype):
-    data = { 'aliquots': [ ] }
+    data = { 
+        'source': source,
+        'program': program,
+        'tumor': tumor,
+        'datatype': datatype,
+        'aliquots': [ ]
+    }
     source_index = -1
     for source_obj in data_map['sources']:
         if source_obj['id'] == source:
@@ -360,7 +400,14 @@ def experiment_source_program_tumor_datatype_aliquots(source, program, tumor, da
 
 @blueprint.route("/experiment/source/<source>/program/<program>/tumor/<tumor>/datatype/<datatype>/aliquot/<aliquot>/all")
 def experiment_source_program_tumor_datatype_aliquot_all(source, program, tumor, datatype, aliquot):
-    data = { 'data': [ ] }
+    data = { 
+        'source': source,
+        'program': program,
+        'tumor': tumor,
+        'datatype': datatype,
+        'aliquot': aliquot,
+        'data': [ ] 
+    }
     mongodb_client = getClient()
     # TODO: missed 'source' and 'program' in find_attributes
     elem_attribute = ""
@@ -410,33 +457,66 @@ def experiment_source_program_tumor_datatype_aliquot_all(source, program, tumor,
 
 @blueprint.route("/experiment/source/<source>/program/<program>/tumor/<tumor>/datatype/<datatype>/aliquot/<aliquot>/coordinates")
 def experiment_source_program_tumor_datatype_aliquot_coordinates(source, program, tumor, datatype, aliquot):
-    data = { 'data': [ ] }
+    data = { 
+        'source': source,
+        'program': program,
+        'tumor': tumor,
+        'datatype': datatype,
+        'aliquot': aliquot,
+        'coordinates': [ ] 
+    }
     collection_name = ""
     collection_from_name = ""
+    join_field = ""
     fields = { '_id':0 }
     if datatype = "methylationbetavalue":
         collection_name = "annotation_humanmethylation"
         collection_from_name = "experiment_"+datatype
+        join_field = "composite_element_ref"
         fields['annotations.chrom'] = 1
         fields['annotations.start'] = 1
         fields['annotations.end'] = 1
         fields['annotations.strand'] = 1
+        fields['annotations._id'] = 0
     else:
         if datatype == "geneexpressionquantification":
             collection_name = "annotation_geneexpression"
-        collection_name = "experiment_"+datatype
+            join_field = "ensembl_gene_id"
+        else:
+            collection_name = "experiment_"+datatype
+            if datatype == "maskedsomaticmutation":
+                join_field = "gene_symbol"
+            elif datatype == "mirnaexpressionquantification" or datatype == "isoformexpressionquantification":
+                join_field = "mirna_id"
         fields['chrom'] = 1
         fields['start'] = 1
         fields['end'] = 1
         fields['strand'] = 1
-
+    if collection_name != "":
+        if datatype == "geneexpressionquantification" or datatype == "methylationbetavalue":
+            as_field = "annotations"
+            match_field = {
+                'source': source,
+                'tumor': tumor,
+                'aliquot': aliquot,
+            }
+            data['coordinates'] = get_documents_by_join(mongodb_client, collection_name, collection_from_name, join_field, join_field, as_field, match_field, fields)
+        else:
+            data['coordinates'] = get_documents(mongodb_client, collection_name, find_attributes={ 'tumor': tumor, 'aliquot': aliquot }, find_criteria={ 'chr':1, 'start':1, 'end':1, 'strand':1, '_id':0 })
     js = json.dumps(data, indent=4, sort_keys=True);
     resp = Response(js, status=200, mimetype='application/json');
     return resp;
 
 @blueprint.route("/experiment/source/<source>/program/<program>/tumor/<tumor>/datatype/<datatype>/aliquot/<aliquot>/ids")
 def experiment_source_program_tumor_datatype_aliquot_ids(source, program, tumor, datatype, aliquot):
-    data = { 'ids': [ ] }
+    data = { 
+        'source': source,
+        'program': program,
+        'tumor': tumor,
+        'datatype': datatype,
+        'aliquot': aliquot,
+        'ids': [ ] 
+    }
     mongodb_client = getClient()
     # TODO: missed 'source' and 'program' in find_attributes
     elem_attribute = ""
@@ -444,7 +524,7 @@ def experiment_source_program_tumor_datatype_aliquot_ids(source, program, tumor,
     if datatype == "geneexpressionquantification":
         elem_attribute = "ensembl_gene_id"
     elif datatype == "methylationbetavalue":
-        elem_attribute = "composite_element_ref"      
+        elem_attribute = "composite_element_ref"
     elif datatype == "maskedsomaticmutation":
         elem_attribute = "gene_symbol"
     elif datatype == "mirnaexpressionquantification" or datatype == "isoformexpressionquantification":
@@ -458,7 +538,14 @@ def experiment_source_program_tumor_datatype_aliquot_ids(source, program, tumor,
 
 @blueprint.route("/experiment/source/<source>/program/<program>/tumor/<tumor>/datatype/<datatype>/aliquot/<aliquot>/id/<elem_id>")
 def experiment_source_program_tumor_datatype_aliquot_elemid_all(source, program, tumor, datatype, aliquot, elem_id):
-    data = { 'data': [ ] }
+    data = { 
+        'source': source,
+        'program': program,
+        'tumor': tumor,
+        'datatype': datatype,
+        'aliquot': aliquot,
+        'data': [ ] 
+    }
     mongodb_client = getClient()
     # TODO: missed 'source' and 'program' in find_attributes
     elem_attribute = ""

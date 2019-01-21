@@ -135,12 +135,11 @@ def experiment_source_aliquots(source):
         # TODO: get only available data types for those particular tumors
         collections = [ 'experiment_'+datatype['id'] for datatype in data_map['datatypes'] ]
         mongodb_client = getClient()
-        aliquots = set()
+        aliquots = list()
         for collection in collections:
             for tumor in tumors_related_to_source:
-                documents = get_documents(mongodb_client, collection, find_attributes={ 'tumor': tumor }, find_criteria={ 'aliquot':1 })
-                aliquots.add( doc['aliquot'] for doc in documents )
-        data['aliquots'] = list(aliquots)
+                aliquots = aliquots + get_documents(mongodb_client, collection, find_attributes={ 'tumor': tumor }, find_criteria={ 'aliquot':1 }, get_one_element="aliquot")
+        data['aliquots'] = list(set(aliquots))
     js = json.dumps(data, indent=4, sort_keys=True);
     resp = Response(js, status=200, mimetype='application/json');
     return resp;
@@ -219,12 +218,11 @@ def experiment_source_program_aliquots(source, program):
         # TODO: get only available data types for those particular tumors
         collections = [ 'experiment_'+datatype['id'] for datatype in data_map['datatypes'] ]
         mongodb_client = getClient()
-        aliquots = set()
+        aliquots = list()
         for collection in collections:
             for tumor in tumors_related_to_source:
-                documents = get_documents(mongodb_client, collection, find_attributes={ 'tumor': tumor }, find_criteria={ 'aliquot':1 })
-                aliquots.add( doc['aliquot'] for doc in documents )
-        data['aliquots'] = list(aliquots)
+                aliquots = aliquots + get_documents(mongodb_client, collection, find_attributes={ 'tumor': tumor }, find_criteria={ 'aliquot':1 }, get_one_element="aliquot")
+        data['aliquots'] = list(set(aliquots))
     js = json.dumps(data, indent=4, sort_keys=True);
     resp = Response(js, status=200, mimetype='application/json');
     return resp;
@@ -350,11 +348,10 @@ def experiment_source_program_tumor_aliquots(source, program, tumor):
             # TODO: get only available data types for that particular tumor
             collections = [ 'experiment_'+datatype['id'] for datatype in data_map['datatypes'] ]
             mongodb_client = getClient()
-            aliquots = set()
+            aliquots = list()
             for collection in collections:
-                documents = get_documents(mongodb_client, collection, find_attributes={ 'tumor': tumor }, find_criteria={ 'aliquot':1 })
-                aliquots.add( doc['aliquot'] for doc in documents )
-            data['aliquots'] = list(aliquots)
+                aliquots =  aliquots + get_documents(mongodb_client, collection, find_attributes={ 'tumor': tumor }, find_criteria={ 'aliquot':1 }, get_one_element="aliquot")
+            data['aliquots'] = list(set(aliquots))
     js = json.dumps(data, indent=4, sort_keys=True);
     resp = Response(js, status=200, mimetype='application/json');
     return resp;
@@ -390,10 +387,8 @@ def experiment_source_program_tumor_datatype_aliquots(source, program, tumor, da
             tumor_datatypes_indices = [ dt for dt in tumor_obj['datatypes'] for tumor_obj in data_map['tumors'] if tumor_obj['source'] == source_index and tumor_obj['program'] == program_index and tumor_obj['id'] == tumor ]
             if datatype in tumor_datatypes_indices:
                 mongodb_client = getClient()
-                aliquots = set()
-                documents = get_documents(mongodb_client, datatype, find_attributes={ 'tumor': tumor }, find_criteria={ 'aliquot':1 })
-                aliquots.add( doc['aliquot'] for doc in documents )
-                data['aliquots'] = list(aliquots)
+                aliquots = get_documents(mongodb_client, datatype, find_attributes={ 'tumor': tumor }, find_criteria={ 'aliquot':1 }, get_one_element="aliquot")
+                data['aliquots'] = list(set(aliquots))
     js = json.dumps(data, indent=4, sort_keys=True);
     resp = Response(js, status=200, mimetype='application/json');
     return resp;
@@ -450,7 +445,7 @@ def experiment_source_program_tumor_datatype_aliquot_all(source, program, tumor,
             }
             data['data'] = get_documents_by_join(mongodb_client, "experiment_"+datatype, annotation_collection, elem_attribute, elem_attribute, as_field, match_field, fields)
         else:
-            data['data'] = get_documents(mongodb_client, "experiment"+datatype, find_attributes={ 'tumor': tumor, 'aliquot': aliquot }, find_criteria={ 'tumor':0, 'aliquot':0, 'source':0, '_id':0 })
+            data['data'] = get_documents(mongodb_client, "experiment_"+datatype, find_attributes={ 'tumor': tumor, 'aliquot': aliquot }, find_criteria={ 'tumor':0, 'aliquot':0, 'source':0, '_id':0 })
     js = json.dumps(data, indent=4, sort_keys=True);
     resp = Response(js, status=200, mimetype='application/json');
     return resp;
@@ -530,7 +525,7 @@ def experiment_source_program_tumor_datatype_aliquot_ids(source, program, tumor,
     elif datatype == "mirnaexpressionquantification" or datatype == "isoformexpressionquantification":
         elem_attribute = "mirna_id"
     data = {
-        'ids': get_documents(mongodb_client, "experiment"+datatype, find_attributes={ 'tumor': tumor, 'aliquot': aliquot }, find_criteria={ elem_attribute:1 }, get_one_element=elem_attribute)
+        'ids': get_documents(mongodb_client, "experiment_"+datatype, find_attributes={ 'tumor': tumor, 'aliquot': aliquot }, find_criteria={ elem_attribute:1 }, get_one_element=elem_attribute)
     }
     js = json.dumps(data, indent=4, sort_keys=True);
     resp = Response(js, status=200, mimetype='application/json');
@@ -603,7 +598,7 @@ def experiment_source_program_tumor_datatype_aliquot_elemid_all(source, program,
             '''
             data['data'] = get_documents_by_join(mongodb_client, "experiment_"+datatype, annotation_collection, elem_attribute, elem_attribute, as_field, match_field, fields)
         else:
-            data['data'] = get_documents(mongodb_client, "experiment"+datatype, find_attributes={ 'tumor': tumor, 'aliquot': aliquot, elem_attribute: elem_id }, find_criteria={ 'tumor':0, 'aliquot':0, 'source':0, '_id':0 })
+            data['data'] = get_documents(mongodb_client, "experiment_"+datatype, find_attributes={ 'tumor': tumor, 'aliquot': aliquot, elem_attribute: elem_id }, find_criteria={ 'tumor':0, 'aliquot':0, 'source':0, '_id':0 })
     js = json.dumps(data, indent=4, sort_keys=True);
     resp = Response(js, status=200, mimetype='application/json');
     return resp;

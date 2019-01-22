@@ -344,7 +344,7 @@ def experiment_source_program_tumor_aliquots(source, program, tumor):
             program_index = program_obj['index']
             break
     if source_index > -1 and program_index > -1:
-        tumors_related_to_source = [ tumor_obj['id'] for tumor_obj in data_map['tumors'] if tumor_obj['source'] == source_index and tumor_obj['program'] == program_index ]
+        tumors_related_to_source = [ tumor_obj['tag'] for tumor_obj in data_map['tumors'] if tumor_obj['source'] == source_index and tumor_obj['program'] == program_index ]
         if tumor in tumors_related_to_source:
             # TODO: get only available data types for that particular tumor
             collections = [ 'experiment_'+datatype['id'] for datatype in data_map['datatypes'] ]
@@ -382,7 +382,7 @@ def experiment_source_program_tumor_datatype_aliquots(source, program, tumor, da
             datatype_index = datatype_obj['index']
             break
     if source_index > -1 and program_index > -1 and datatype_index > -1:
-        tumors_related_to_source = [ tumor_obj['id'] for tumor_obj in data_map['tumors'] if tumor_obj['source'] == source_index and tumor_obj['program'] == program_index ]
+        tumors_related_to_source = [ tumor_obj['tag'] for tumor_obj in data_map['tumors'] if tumor_obj['source'] == source_index and tumor_obj['program'] == program_index ]
         if tumor in tumors_related_to_source:
             # TODO: get only available data types for that particular tumor
             tumor_datatypes_indices = [ dt for dt in tumor_obj['datatypes'] for tumor_obj in data_map['tumors'] if tumor_obj['source'] == source_index and tumor_obj['program'] == program_index and tumor_obj['id'] == tumor ]
@@ -505,28 +505,30 @@ def experiment_source_program_tumor_datatype_aliquot_coordinates(source, program
 
 @blueprint.route("/experiment/source/<source>/program/<program>/tumor/<tumor>/datatype/<datatype>/aliquot/<aliquot>/ids")
 def experiment_source_program_tumor_datatype_aliquot_ids(source, program, tumor, datatype, aliquot):
+    mongodb_client = getClient()
+    # TODO: missed 'source' and 'program' in find_attributes
+    elem_attribute = ""
+    ids_experiment = ""
+    # TODO: ids for 'copynumbersegment' and 'maskedcopynumbersegment' ?
+    if datatype == "geneexpressionquantification":
+        ids_experiment = "ensembl_gene_ids"
+        elem_attribute = "ensembl_gene_id"
+    elif datatype == "methylationbetavalue":
+        ids_experiment = "composite_elements_ref"
+        elem_attribute = "composite_element_ref"
+    elif datatype == "maskedsomaticmutation":
+        ids_experiment = "gene_symbols"
+        elem_attribute = "gene_symbol"
+    elif datatype == "mirnaexpressionquantification" or datatype == "isoformexpressionquantification":
+        ids_experiment = "mirna_ids"
+        elem_attribute = "mirna_id"
     data = { 
         'source': source,
         'program': program,
         'tumor': tumor,
         'datatype': datatype,
         'aliquot': aliquot,
-        'ids': [ ]
-    }
-    mongodb_client = getClient()
-    # TODO: missed 'source' and 'program' in find_attributes
-    elem_attribute = ""
-    # TODO: ids for 'copynumbersegment' and 'maskedcopynumbersegment' ?
-    if datatype == "geneexpressionquantification":
-        elem_attribute = "ensembl_gene_id"
-    elif datatype == "methylationbetavalue":
-        elem_attribute = "composite_element_ref"
-    elif datatype == "maskedsomaticmutation":
-        elem_attribute = "gene_symbol"
-    elif datatype == "mirnaexpressionquantification" or datatype == "isoformexpressionquantification":
-        elem_attribute = "mirna_id"
-    data = {
-        'ids': get_documents(mongodb_client, "experiment_"+datatype, find_attributes={ 'tumor': tumor, 'aliquot': aliquot }, find_criteria={ elem_attribute:1 }, get_one_element=elem_attribute)
+        ids_experiment: get_documents(mongodb_client, "experiment_"+datatype, find_attributes={ 'tumor': tumor, 'aliquot': aliquot }, find_criteria={ elem_attribute:1 }, get_one_element=elem_attribute)
     }
     js = json.dumps(data, indent=4, sort_keys=True);
     resp = Response(js, status=200, mimetype='application/json');

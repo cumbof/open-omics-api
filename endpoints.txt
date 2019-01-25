@@ -19,6 +19,8 @@ annotations:
         or list of all methylated sites if annotation_name = 'humanmethylation'
     /annotation/<annotation_name>/id/<elem_id>
         return annotation row for the specified id (gene or methylated site)
+    /annotation/<annotation_name>/overlap/chrom/<chrom>/start/<start>/end/<end>/strand/<strand>
+        return a list of overlapping entries according to the specified genomic coordinate
 
 experiments:
     /experiment/sources
@@ -61,6 +63,8 @@ experiments:
         return a list of experiments related to the specified aliquot
         or a list of endpoints:
         /experiment/source/<source>/program/<program>/tumor/<tumor>/datatype/<datatype>/aliquot/<aliquot>/all
+    /experiment/source/<source>/program/<program>/tumor/<tumor>/datatype/<datatype>/aliquot/<aliquot>/overlap/chrom/<chrom>/start/<start>/end/<end>/strand/<strand>
+        return a list of overlapping entries according to the specified genomic coordinate
 
 metadata:
     /metadata/sources

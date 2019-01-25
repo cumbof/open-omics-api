@@ -80,3 +80,19 @@ def annotation_id(annotation_name, elem_id):
     js = json.dumps(data, indent=4, sort_keys=True);
     resp = Response(js, status=200, mimetype='application/json');
     return resp;
+
+@blueprint.route("/annotation/<annotation_name>/overlap/chrom/<chrom>/start/<start>/end/<end>/strand/<strand>")
+def annotation_overlap(annotation_name, chrom, start, end, strand):
+    mongodb_client = getClient()
+    find_attributes = {'chrom': chrom, 'start': {'$lte': int(end)}, 'end': {'$gte': int(start)}, 'strand': strand}
+    data = {
+        'annotation': annotation_name,
+        'chrom': chrom,
+        'start': start,
+        'end': end,
+        'strand': strand,
+        'hits': get_documents(mongodb_client, annotation_name, find_attributes=find_attributes)
+    }
+    js = json.dumps(data, indent=4, sort_keys=True);
+    resp = Response(js, status=200, mimetype='application/json');
+    return resp;

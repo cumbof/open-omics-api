@@ -620,3 +620,33 @@ def experiment_aliquot_list(aliquot):
     js = json.dumps(data, indent=4, sort_keys=True);
     resp = Response(js, status=200, mimetype='application/json');
     return resp;
+
+@blueprint.route("/experiment/source/<source>/program/<program>/tumor/<tumor>/datatype/<datatype>/aliquot/<aliquot>/overlap/chrom/<chrom>/start/<start>/end/<end>/strand/<strand>")
+def experiment_overlap(source, program, tumor, datatype, aliquot, chrom, start, end, strand):
+    mongodb_client = getClient()
+    collection_name = ''
+    find_attributes = {'chrom': chrom, 'start': {'$lte': int(end)}, 'end': {'$gte': int(start)}, 'strand': strand}
+    if datatype.strip().lower() == 'geneexpressionquantification':
+        collection_name = 'annotation_geneexpression'
+    elif datatype.strip().lower() == 'methylationbetavalue':
+        collection_name = 'annotation_humanmethylation'
+    else:
+        collection_name = 'experiment_' + datatype.strip().lower()
+        find_attributes[ 'source' ] = source
+        find_attributes[ 'tumor' ] = tumor
+        find_attributes[ 'aliquot' ] = aliquot
+    data = {
+        'source': source,
+        'program': program,
+        'tumor': tumor,
+        'datatype': datatype,
+        'aliquot': aliquot,
+        'chrom': chrom,
+        'start': start,
+        'end': end,
+        'strand': strand,
+        'hits': get_documents(mongodb_client, collection_name, find_attributes=find_attributes)
+    }
+    js = json.dumps(data, indent=4, sort_keys=True);
+    resp = Response(js, status=200, mimetype='application/json');
+    return resp;

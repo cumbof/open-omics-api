@@ -19,6 +19,7 @@ client = pymongo.MongoClient("mongodb://localhost:27017/")
 mydb = client["og"]
 
 def poputate_experiments(mydb, experiment_base_path):
+    coll2indexMap = { }
     for subdir_base, dirs_base, files_base in os.walk( experiment_base_path ):
         for tumor_dir in dirs_base:
             tumor_dir_path = os.path.join(subdir_base, tumor_dir)
@@ -33,22 +34,31 @@ def poputate_experiments(mydb, experiment_base_path):
                             bed_file_path = None
                             meta_file_path = None
                             schema_file_path = os.path.join(datatype_dir_path, 'header.schema')
-                            schema_content = get_schema_from_XML(schema_file_path)
+                            schema_attributes, schema_types = get_schema_from_XML(schema_file_path)
                             for file in files:
                                 if file.endswith(".bed"):
                                     bed_file_path = os.path.join(datatype_dir_path, file)
                                     additional_values = {
                                         "tumor": tumor_dir.lower(),
-                                        "aliquot": "-".join(os.path.splitext(file)[0].split("-")[:-1])
+                                        "aliquot": "-".join(os.path.splitext(file)[0].split("-")[:-1]),
+                                        "source": "gdc"
                                     }
-                                    exp_docs = create_documents(bed_file_path, schema_content, exclude_idx=exclude_idx_map[datatype_dir], additional_entries=additional_values)
+                                    exp_docs = create_documents(bed_file_path, schema_attributes, schema_types, exclude_idx=exclude_idx_map[datatype_dir], additional_entries=additional_values)
                                     exp_collection.insert_many(exp_docs)
+                                    indexMap["experiment_" + datatype_dir.lower().replace("_", "")] = { }
+                                    for attr in schema_attributes:
+                                        indexMap["experiment_" + datatype_dir.lower().replace("_", "")][attr] = 1
                                     print('bed: ' + file)                           
                                 elif file.endswith(".meta"):
                                     meta_file_path = os.path.join(datatype_dir_path, file)
                                     meta_doc = create_meta_document(meta_file_path)
                                     meta_collection.insert_one(meta_doc)
-                                    print('meta: ' + file)                           
+                                    indexMap["metadata"] = { "gdc__aliquots__aliquot_id": 1 }
+                                    for attr in schema_attributes:
+
+                                    print('meta: ' + file)
+    for collection_name in indexMap:
+        createIndex(collection_name, indexMap[collection_name])
                             
 def populate_annotations(mydb, annotation_base_path):
     for subdir_base, dirs_base, files_base in os.walk( annotation_base_path ):
@@ -56,6 +66,7 @@ def populate_annotations(mydb, annotation_base_path):
             collection_name = re.sub(r'\d+', '', annotation_dir.lower())
             collection = mydb[ "annotation_" + collection_name ]
             annotation_dir_path = os.path.join(subdir_base, annotation_dir)
+            indexMap = { }
             for subdir, dirs, files in os.walk( annotation_dir_path ):
                 bed_file_path = None
                 schema_file_path = None
@@ -64,11 +75,23 @@ def populate_annotations(mydb, annotation_base_path):
                         bed_file_path = os.path.join(annotation_dir_path, file)
                     elif file.endswith(".schema"):
                         schema_file_path = os.path.join(annotation_dir_path, file)
-                schema_content = get_schema_from_XML(schema_file_path)
-                docs = create_documents(bed_file_path, schema_content)
+                schema_attributes, schema_types = get_schema_from_XML(schema_file_path)
+                for attr in schema_attributes:
+                    indexMap[attr] = 1
+                docs = create_documents(bed_file_path, schema_attributes, schema_types)
                 collection.insert_many(docs)
+            createIndex("annotation_"+collection_name, indexMap)
 
-def create_documents(bed_file_path, schema_content, exclude_idx=[], additional_entries={}):
+# https://docs.mongodb.com/manual/reference/method/db.collection.createIndexes/
+def createIndex(collection_name, indexMap):
+    collection = mydb[ collection_name ]
+    indexes = [ ]
+    for idx in indexMap:
+        if indexMap[idx] > 0:
+            indexes.append( pymongo.IndexModel( [ (idx, pymongo.ASCENDING) ], name=collection_name+"_"+idx ) )
+    collection.create_indexes( indexes )
+
+def create_documents(bed_file_path, schema_attributes, schema_types, exclude_idx=[], additional_entries={}):
     docs = []
     with open(bed_file_path) as bad_file:
         for line in bad_file:
@@ -77,9 +100,14 @@ def create_documents(bed_file_path, schema_content, exclude_idx=[], additional_e
                 doc = { }
                 for attr_index in range(0, len(splitted_line)): 
                     if attr_index not in exclude_idx:
-                        doc[ schema_content[attr_index] ] = splitted_line[attr_index].strip()
+                        if schema_types[ attr_index ] == "LONG":
+                            doc[ schema_attributes[attr_index] ] = long(splitted_line[attr_index].strip())
+                        elif schema_types[ attr_index ] == "DOUBLE":
+                            doc[ schema_attributes[attr_index] ] = float(splitted_line[attr_index].strip())
+                        else:
+                            doc[ schema_attributes[attr_index] ] = str(splitted_line[attr_index].strip())
                         for additional_attr in additional_entries:
-                            doc[ additional_attr ] = additional_entries[additional_attr]
+                            doc[ additional_attr ] = str(additional_entries[additional_attr])
                 docs.append(doc)
     return docs
 
@@ -101,10 +129,12 @@ def create_meta_document(meta_file_path):
 def get_schema_from_XML(schema_file_path):
     tree = ET.parse(schema_file_path)
     root = tree.getroot()
-    schema = []
+    attributes = [ ]
+    types = [ ]
     for child in root[0]:
-        schema.append(child.text)
-    return schema
+        attributes.append( child.text )
+        types.append( child.attrib["type"] )
+    return attributes, types
 
 if __name__ == '__main__':
     populate_annotations(mydb, annotation_base_path)

@@ -15,6 +15,19 @@ exclude_idx_map = {
     "masked_copy_number_segment": [ ]
 }
 
+index_map = {
+    "annotation_geneexpression": {'chrom':1, 'start':1, 'end':1, 'strand':1, 'ensembl_gene_id':1, 'entrez_gene_id':1, 'gene_symbol':1},
+    "annotation_humanmethylation": {'chrom':1, 'start':1, 'end':1, 'strand':1, 'composite_element_ref':1, 'gene_symbol':1, 'entrez_gene_id':1, 'ensembl_transcript_id':1},
+    "experiment_geneexpressionquantification": {'ensembl_gene_id':1, 'entrez_gene_id':1, 'gene_symbol':1, 'tumor':1, 'aliquot':1, 'source':1},
+    "experiment_isoformexpressionquantification": {'chrom':1, 'start':1, 'end':1, 'strand':1, 'mirna_id':1, 'entrez_gene_id':1, 'gene_symbol':1, 'tumor':1, 'aliquot':1, 'source':1},
+    "experiment_methylationbetavalue": {'composite_element_ref':1, 'tumor':1, 'aliquot':1, 'source':1},
+    "experiment_mirnaexpressionquantification": {'chrom':1, 'start':1, 'end':1, 'strand':1, 'mirna_id':1, 'entrez_gene_id':1, 'gene_symbol':1, 'tumor':1, 'aliquot':1, 'source':1},
+    "experiment_maskedsomaticmutation": {'chrom':1, 'start':1, 'end':1, 'strand':1, 'entrez_gene_id':1, 'gene_symbol':1, 'tumor':1, 'aliquot':1, 'source':1},
+    "experiment_copynumbersegment": {'chrom':1, 'start':1, 'end':1, 'strand':1 ,'tumor':1, 'aliquot':1, 'source':1},
+    "experiment_maskedcopynumbersegment": {'chrom':1, 'start':1, 'end':1, 'strand':1, 'tumor':1, 'aliquot':1, 'source':1},
+    "metadata": { "gdc__aliquots__aliquot_id": 1 }
+}
+
 client = pymongo.MongoClient("mongodb://localhost:27017/")
 mydb = client["og"]
 
@@ -45,20 +58,12 @@ def poputate_experiments(mydb, experiment_base_path):
                                     }
                                     exp_docs = create_documents(bed_file_path, schema_attributes, schema_types, exclude_idx=exclude_idx_map[datatype_dir], additional_entries=additional_values)
                                     exp_collection.insert_many(exp_docs)
-                                    indexMap["experiment_" + datatype_dir.lower().replace("_", "")] = { }
-                                    for attr in schema_attributes:
-                                        indexMap["experiment_" + datatype_dir.lower().replace("_", "")][attr] = 1
-                                    print('bed: ' + file)                           
+                                    print 'bed: ' + file                         
                                 elif file.endswith(".meta"):
                                     meta_file_path = os.path.join(datatype_dir_path, file)
                                     meta_doc = create_meta_document(meta_file_path)
                                     meta_collection.insert_one(meta_doc)
-                                    indexMap["metadata"] = { "gdc__aliquots__aliquot_id": 1 }
-                                    for attr in schema_attributes:
-
-                                    print('meta: ' + file)
-    for collection_name in indexMap:
-        createIndex(collection_name, indexMap[collection_name])
+                                    print 'meta: ' + file
                             
 def populate_annotations(mydb, annotation_base_path):
     for subdir_base, dirs_base, files_base in os.walk( annotation_base_path ):
@@ -66,7 +71,6 @@ def populate_annotations(mydb, annotation_base_path):
             collection_name = re.sub(r'\d+', '', annotation_dir.lower())
             collection = mydb[ "annotation_" + collection_name ]
             annotation_dir_path = os.path.join(subdir_base, annotation_dir)
-            indexMap = { }
             for subdir, dirs, files in os.walk( annotation_dir_path ):
                 bed_file_path = None
                 schema_file_path = None
@@ -76,11 +80,8 @@ def populate_annotations(mydb, annotation_base_path):
                     elif file.endswith(".schema"):
                         schema_file_path = os.path.join(annotation_dir_path, file)
                 schema_attributes, schema_types = get_schema_from_XML(schema_file_path)
-                for attr in schema_attributes:
-                    indexMap[attr] = 1
                 docs = create_documents(bed_file_path, schema_attributes, schema_types)
                 collection.insert_many(docs)
-            createIndex("annotation_"+collection_name, indexMap)
 
 # https://docs.mongodb.com/manual/reference/method/db.collection.createIndexes/
 def createIndex(collection_name, indexMap):
@@ -139,3 +140,5 @@ def get_schema_from_XML(schema_file_path):
 if __name__ == '__main__':
     populate_annotations(mydb, annotation_base_path)
     poputate_experiments(mydb, experiment_base_path)
+    for collection in index_map:
+        createIndex(collection, index_map[collection])

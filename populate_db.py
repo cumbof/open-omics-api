@@ -104,7 +104,10 @@ def create_documents(bed_file_path, schema_attributes, schema_types, exclude_idx
                         if schema_types[ attr_index ] == "LONG":
                             doc[ schema_attributes[attr_index] ] = long(splitted_line[attr_index].strip())
                         elif schema_types[ attr_index ] == "DOUBLE":
-                            doc[ schema_attributes[attr_index] ] = float(splitted_line[attr_index].strip())
+                            try:
+                                doc[ schema_attributes[attr_index] ] = float(splitted_line[attr_index].strip())
+                            except Exception:
+                                doc[ schema_attributes[attr_index] ] = None
                         else:
                             doc[ schema_attributes[attr_index] ] = str(splitted_line[attr_index].strip())
                         for additional_attr in additional_entries:
@@ -140,5 +143,6 @@ def get_schema_from_XML(schema_file_path):
 if __name__ == '__main__':
     populate_annotations(mydb, annotation_base_path)
     poputate_experiments(mydb, experiment_base_path)
+    print '---------- creation indexes ----------'
     for collection in index_map:
         createIndex(collection, index_map[collection])

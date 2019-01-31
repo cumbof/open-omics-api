@@ -102,7 +102,10 @@ def create_documents(bed_file_path, schema_attributes, schema_types, exclude_idx
                 for attr_index in range(0, len(splitted_line)): 
                     if attr_index not in exclude_idx:
                         if schema_types[ attr_index ] == "LONG":
-                            doc[ schema_attributes[attr_index] ] = long(splitted_line[attr_index].strip())
+                            try:
+                                doc[ schema_attributes[attr_index] ] = long(splitted_line[attr_index].strip())
+                            except Exception:
+                                doc[ schema_attributes[attr_index] ] = None
                         elif schema_types[ attr_index ] == "DOUBLE":
                             try:
                                 doc[ schema_attributes[attr_index] ] = float(splitted_line[attr_index].strip())

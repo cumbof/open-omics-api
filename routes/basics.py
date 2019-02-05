@@ -11,7 +11,7 @@ with open("./config.yaml", 'r') as cfg:
 app_name = str(config["app"]["name"]);
 app_version = str(config["app"]["version"]);
 
-@blueprint.route("/routes")
+@blueprint.route("/api/routes")
 def routes():
     data = {
         'application': app_name,

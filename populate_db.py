@@ -146,6 +146,9 @@ def get_schema_from_XML(schema_file_path):
 if __name__ == '__main__':
     populate_annotations(mydb, annotation_base_path)
     poputate_experiments(mydb, experiment_base_path)
-    print '---------- creation indexes ----------'
+    print '---------- start indexes ----------'
     for collection in index_map:
+        print collection
         createIndex(collection, index_map[collection])
+    print '---------- end indexes ----------'
+

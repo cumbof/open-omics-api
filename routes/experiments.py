@@ -385,10 +385,10 @@ def experiment_source_program_tumor_datatype_aliquots(source, program, tumor, da
         tumors_related_to_source = [ tumor_obj['tag'] for tumor_obj in data_map['tumors'] if tumor_obj['source'] == source_index and tumor_obj['program'] == program_index ]
         if tumor in tumors_related_to_source:
             # TODO: get only available data types for that particular tumor
-            tumor_datatypes_indices = [ dt for dt in tumor_obj['datatypes'] for tumor_obj in data_map['tumors'] if tumor_obj['source'] == source_index and tumor_obj['program'] == program_index and tumor_obj['id'] == tumor ]
-            if datatype in tumor_datatypes_indices:
+            tumor_datatypes_indices = [ dt for dt in tumor_obj['datatypes'] for tumor_obj in data_map['tumors'] if tumor_obj['source'] == source_index and tumor_obj['program'] == program_index and tumor_obj['tag'] == tumor ]
+            if datatype_index in tumor_datatypes_indices:
                 mongodb_client = getClient()
-                aliquots = get_documents(mongodb_client, datatype, find_attributes={ 'tumor': tumor }, find_criteria={ 'aliquot':1 }, get_one_element="aliquot")
+                aliquots = get_documents(mongodb_client, 'experiment_'+datatype, find_attributes={ 'tumor': tumor }, find_criteria={ 'aliquot':1 }, get_one_element="aliquot")
                 data['aliquots'] = list(set(aliquots))
     js = json.dumps(data, indent=4, sort_keys=True);
     resp = Response(js, status=200, mimetype='application/json');

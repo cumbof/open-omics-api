@@ -80,6 +80,7 @@ metadata:
         return a list of all related aliquots with a list of endpoints:
         /experiment/source/<source>/program/<program>/tumor/<tumor>/datatype/<datatype>/aliquot/<aliquot>/all
     /metadata/aliquot/<aliquot>/list
-        return a list of metadata related to the specified aliquot
-        or a list of endpoints:
+        return a list of endpoints:
         /experiment/source/<source>/program/<program>/tumor/<tumor>/datatype/<datatype>/aliquot/<aliquot>/all
+    /metadata/attribute/<attribute>/value/<value>/list
+        return a list of metadata related to the specified attribute-value couple

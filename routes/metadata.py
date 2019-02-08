@@ -95,3 +95,15 @@ def metadata_aliquot(aliquot):
     js = json.dumps(data, indent=4, sort_keys=True);
     resp = Response(js, status=200, mimetype='application/json');
     return resp;
+
+@blueprint.route("/metadata/attribute/<attribute>/value/<value>/list")
+def metadata_aliquot(attribute, value):
+    mongodb_client = getClient()
+    values = get_documents(mongodb_client, "metadata", find_attributes={ attribute: value })
+    data = {
+        'aliquot': aliquot,
+        'hits': values
+    }
+    js = json.dumps(data, indent=4, sort_keys=True);
+    resp = Response(js, status=200, mimetype='application/json');
+    return resp;

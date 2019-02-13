@@ -389,7 +389,8 @@ def experiment_source_program_tumor_datatype_aliquots(source, program, tumor, da
             if datatype_index in tumor_datatypes_indices:
                 mongodb_client = getClient()
                 aliquots = get_documents(mongodb_client, 'experiment_'+datatype, find_attributes={ 'tumor': tumor }, find_criteria={ 'aliquot':1 }, get_one_element="aliquot")
-                data['aliquots'] = list(set(aliquots))
+                #data['aliquots'] = list(set(aliquots))
+                data['aliquots'] = aliquots
     js = json.dumps(data, indent=4, sort_keys=True);
     resp = Response(js, status=200, mimetype='application/json');
     return resp;

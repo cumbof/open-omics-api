@@ -96,12 +96,13 @@ def metadata_aliquot(aliquot):
     resp = Response(js, status=200, mimetype='application/json');
     return resp;
 
-@blueprint.route("/metadata/attribute/<attribute>/value/<value>/list")
-def metadata_aliquot(attribute, value):
+@blueprint.route("/metadata/attribute/<attribute>/value/<value>/aliquots")
+def metadata_aliquot_list(attribute, value):
     mongodb_client = getClient()
-    values = get_documents(mongodb_client, "metadata", find_attributes={ attribute: value })
+    values = get_documents(mongodb_client, "metadata", find_attributes={ attribute: value }, find_criteria={'gdc__aliquots__aliquot_id':1 })
     data = {
-        'aliquot': aliquot,
+        'attribure': attribute,
+        'value': value,
         'hits': values
     }
     js = json.dumps(data, indent=4, sort_keys=True);

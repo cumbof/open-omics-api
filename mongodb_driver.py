@@ -58,10 +58,11 @@ def get_documents(client, collection_id, find_attributes={}, find_criteria={}, g
                 for doc in collection.find( find_attributes, find_criteria ):
                     documents.append( doc )
             else:
-                documents_tmp = set()
-                for doc in collection.find( find_attributes, find_criteria ):
-                    documents_tmp.add( doc[ get_one_element ] )
-                documents = list(documents_tmp)
+                # documents_tmp = set()
+                 for doc in collection.find( find_attributes, find_criteria ):
+                    documents.append( doc[ get_one_element ] )
+                #     documents_tmp.add( doc[ get_one_element ] )
+                # documents = list(documents_tmp)
         except Exception as e:
             client.close();
             client = getClient();

@@ -21,25 +21,27 @@ def metadata_sources():
 def metadata_source_attribute_all(source, attribute):
     mongodb_client = getClient()
     values = get_documents(mongodb_client, "metadata", find_attributes={ 'source': source }, find_criteria={ attribute:1 })
-    parsed_values = [ ]
+    parsed_values = set()
     for val in values:
-        parsed_values.append( val[attribute] )
+        if attribute in val:
+            parsed_values.add( val[attribute] )
     data = {
         'source': source,
         'attribute': attribute,
-        'values': parsed_values
+        'values': list(parsed_values)
     }
     js = json.dumps(data, indent=4, sort_keys=True);
     resp = Response(js, status=200, mimetype='application/json');
     return resp;
 
-@blueprint.route("/metadata/source/<source>/attribute/<attribute>/value/<value>/aliquots")
+@blueprint.route("/metadata/source/<source>/attribute/<attribute>/value/<value>/aliquots") #nosense 
 def metadata_source_attribute_value(source, attribute, value):
     mongodb_client = getClient()
     values = get_documents(mongodb_client, "metadata", find_attributes={ 'source': source, attribute: value }, find_criteria={ 'gdc__program__name':1, 'gdc__project__project_id':1, 'gdc__type':1, 'gdc__aliquots__aliquot_id':1 })
     hits = [ ]
     for val in values:
-        hits.append( "/experiment/source/"+source+"/program/"+val["gdc__program__name"]+"/tumor/"+val["gdc__project__project_id"]+"/datatype/"+val["gdc__type"]+"/aliquot/"+val["gdc__aliquots__aliquot_id"]+"/all" )
+        if 'gdc__program__name' in val and 'gdc__project__project_id' in val and 'gdc__type' in val and 'gdc__aliquots__aliquot_id' in val:
+            hits.append( "/experiment/source/"+source+"/program/"+val["gdc__program__name"]+"/tumor/"+val["gdc__project__project_id"]+"/datatype/"+val["gdc__type"]+"/aliquot/"+val["gdc__aliquots__aliquot_id"]+"/all" )
     data = {
         'source': source,
         'attribute': attribute,
@@ -54,12 +56,13 @@ def metadata_source_attribute_value(source, attribute, value):
 def metadata_attribute_all(attribute):
     mongodb_client = getClient()
     values = get_documents(mongodb_client, "metadata", find_criteria={ attribute:1 })
-    parsed_values = [ ]
+    parsed_values = set()
     for val in values:
-        parsed_values.append( val[attribute] )
+        if attribute in val:
+            parsed_values.add( val[attribute] )
     data = {
         'attribute': attribute,
-        'values': parsed_values
+        'values': list(parsed_values)
     }
     js = json.dumps(data, indent=4, sort_keys=True);
     resp = Response(js, status=200, mimetype='application/json');
@@ -71,7 +74,8 @@ def metadata_attribute_value(attribute, value):
     values = get_documents(mongodb_client, "metadata", find_attributes={ attribute: value }, find_criteria={ 'source':1, 'gdc__program__name':1, 'gdc__project__project_id':1, 'gdc__type':1, 'gdc__aliquots__aliquot_id':1 })
     hits = [ ]
     for val in values:
-        hits.append( "/experiment/source/"+val["source"]+"/program/"+val["gdc__program__name"]+"/tumor/"+val["gdc__project__project_id"]+"/datatype/"+val["gdc__type"]+"/aliquot/"+val["gdc__aliquots__aliquot_id"]+"/all" )
+        if 'source' in val and 'gdc__program__name' in val and 'gdc__project__project_id' in val and 'gdc__type' in val and 'gdc__aliquots__aliquot_id' in val:
+            hits.append( "/experiment/source/"+val["source"]+"/program/"+val["gdc__program__name"].lower()+"/tumor/"+val["gdc__project__project_id"].lower()+"/datatype/"+val["gdc__type"].lower().replace("_","")+"/aliquot/"+val["gdc__aliquots__aliquot_id"].lower()+"/all" )
     data = {
         'attribute': attribute,
         'value': value,
@@ -84,10 +88,11 @@ def metadata_attribute_value(attribute, value):
 @blueprint.route("/metadata/aliquot/<aliquot>/list")
 def metadata_aliquot(aliquot):
     mongodb_client = getClient()
-    values = get_documents(mongodb_client, "metadata", find_attributes={ 'gdc__aliquots__aliquot_id': aliquot }, find_criteria={ 'source':1, 'gdc__program__name':1, 'gdc__project__project_id':1, 'gdc__type':1 })
+    values = get_documents(mongodb_client, "metadata", find_attributes={ 'gdc__aliquots__aliquot_id': aliquot }, find_criteria={ 'source':1, 'gdc__program__name':1, 'gdc__project__project_id':1, 'gdc__type':1 }) #'source':1 non esiste questo campo
     hits = [ ]
     for val in values:
-        hits.append( "/experiment/source/"+val["source"]+"/program/"+val["gdc__program__name"]+"/tumor/"+val["gdc__project__project_id"]+"/datatype/"+val["gdc__type"]+"/aliquot/"+aliquot+"/all" )
+        if 'gdc__program__name' in val and 'gdc__project__project_id' in val and 'gdc__type' in val:
+            hits.append( "/experiment/source/"+val["source"]+"/program/"+val["gdc__program__name"]+"/tumor/"+val["gdc__project__project_id"]+"/datatype/"+val["gdc__type"]+"/aliquot/"+aliquot+"/all" )
     data = {
         'aliquot': aliquot,
         'hits': hits
@@ -96,10 +101,10 @@ def metadata_aliquot(aliquot):
     resp = Response(js, status=200, mimetype='application/json');
     return resp;
 
-@blueprint.route("/metadata/attribute/<attribute>/value/<value>/aliquots")
+@blueprint.route("/metadata/attribute/<attribute>/value/<value>/aliquots_list") #???
 def metadata_aliquot_list(attribute, value):
     mongodb_client = getClient()
-    values = get_documents(mongodb_client, "metadata", find_attributes={ attribute: value }, find_criteria={'gdc__aliquots__aliquot_id':1 })
+    values = get_documents(mongodb_client, "metadata", find_attributes={ attribute: value }, find_criteria={ 'source':1, 'gdc__program__name':1, 'gdc__project__project_id':1, 'gdc__type':1, 'gdc__aliquots__aliquot_id':1 })
     data = {
         'attribure': attribute,
         'value': value,
@@ -108,3 +113,4 @@ def metadata_aliquot_list(attribute, value):
     js = json.dumps(data, indent=4, sort_keys=True);
     resp = Response(js, status=200, mimetype='application/json');
     return resp;
+

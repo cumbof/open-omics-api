@@ -53,10 +53,11 @@ def routes():
             'metadata': [
                 '/metadata/sources',
                 '/metadata/source/<source>/attribute/<attribute>/all',
-                '/metadata/source/<source>/attribute/<attribute>/value/<value>/aliquots',
+                '/metadata/source/<source>/attribute/<attribute>/value/<value>/urls',
                 '/metadata/attribute/<attribute>/all',
-                '/metadata/attribute/<attribute>/value/<value>/aliquots',
-                '/metadata/aliquot/<aliquot>/list'
+                '/metadata/attribute/<attribute>/value/<value>/urls',
+                '/metadata/aliquot/<aliquot>/urls',
+                '/metadata/attribute/<attribute>/value/<value>/aliquots'
             ]
         }
     };

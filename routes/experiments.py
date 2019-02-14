@@ -357,6 +357,43 @@ def experiment_source_program_tumor_aliquots(source, program, tumor):
     resp = Response(js, status=200, mimetype='application/json');
     return resp;
 
+#@blueprint.route("/experiment/source/<source>/program/<program>/tumor/<tumor>/datatype/<datatype>/aliquots")
+# def experiment_source_program_tumor_datatype_aliquots(source, program, tumor, datatype):
+#     data = { 
+#         'source': source,
+#         'program': program,
+#         'tumor': tumor,
+#         'datatype': datatype,
+#         'aliquots': [ ]
+#     }
+#     source_index = -1
+#     for source_obj in data_map['sources']:
+#         if source_obj['id'] == source:
+#             source_index = source_obj['index']
+#             break
+#     program_index = -1
+#     for program_obj in data_map['programs']:
+#         if program_obj['id'] == program:
+#             program_index = program_obj['index']
+#             break
+#     datatype_index = -1
+#     for datatype_obj in data_map['datatypes']:
+#         if datatype_obj['id'] == datatype:
+#             datatype_index = datatype_obj['index']
+#             break
+#     if source_index > -1 and program_index > -1 and datatype_index > -1:
+#         tumors_related_to_source = [ tumor_obj['tag'] for tumor_obj in data_map['tumors'] if tumor_obj['source'] == source_index and tumor_obj['program'] == program_index ]
+#         if tumor in tumors_related_to_source:
+#             # TODO: get only available data types for that particular tumor
+#             tumor_datatypes_indices = [ dt for dt in tumor_obj['datatypes'] for tumor_obj in data_map['tumors'] if tumor_obj['source'] == source_index and tumor_obj['program'] == program_index and tumor_obj['tag'] == tumor ]
+#             if datatype_index in tumor_datatypes_indices:
+#                 mongodb_client = getClient()
+#                 aliquots = get_documents(mongodb_client, 'experiment_'+datatype, find_attributes={ 'tumor': tumor }, find_criteria={ 'aliquot':1 }, get_one_element="aliquot")
+#                 #data['aliquots'] = list(set(aliquots))
+#                 data['aliquots'] = aliquots
+#     js = json.dumps(data, indent=4, sort_keys=True);
+#     resp = Response(js, status=200, mimetype='application/json');
+#     return resp;
 @blueprint.route("/experiment/source/<source>/program/<program>/tumor/<tumor>/datatype/<datatype>/aliquots")
 def experiment_source_program_tumor_datatype_aliquots(source, program, tumor, datatype):
     data = { 
@@ -388,9 +425,20 @@ def experiment_source_program_tumor_datatype_aliquots(source, program, tumor, da
             tumor_datatypes_indices = [ dt for dt in tumor_obj['datatypes'] for tumor_obj in data_map['tumors'] if tumor_obj['source'] == source_index and tumor_obj['program'] == program_index and tumor_obj['tag'] == tumor ]
             if datatype_index in tumor_datatypes_indices:
                 mongodb_client = getClient()
-                aliquots = get_documents(mongodb_client, 'experiment_'+datatype, find_attributes={ 'tumor': tumor }, find_criteria={ 'aliquot':1 }, get_one_element="aliquot")
+                ##aliquots = get_documents(mongodb_client, 'experiment_'+datatype, find_attributes={ 'tumor': tumor }, find_criteria={ 'aliquot':1 }, get_one_element="aliquot")
                 #data['aliquots'] = list(set(aliquots))
-                data['aliquots'] = aliquots
+                ##data['aliquots'] = aliquots
+                
+                def generatorRes(mongodb_client, source, program, tumor, datatype):
+                    yield '{ \'source\': '+source+',\'program\': '+program+',\'tumor\': '+tumor+',\'datatype\': '+datatype+',\'aliquots\': ['
+                    for elem in get_documents_stream(mongodb_client, 'experiment_'+datatype, find_attributes={ 'tumor': tumor }, find_criteria={ 'aliquot':1 }, get_one_element="aliquot", enableDistinct="aliquot"):
+                        otherElems = ', '
+                        if elem == 'EOQ':
+                            otherElems = ''
+                        yield json.dumps(elem) + otherElems
+                    yield '] }'
+                return Response( generatorRes(mongodb_client, source, program, tumor, datatype), mimetype='application/json' )
+    
     js = json.dumps(data, indent=4, sort_keys=True);
     resp = Response(js, status=200, mimetype='application/json');
     return resp;

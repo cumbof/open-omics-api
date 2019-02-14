@@ -112,3 +112,29 @@ def get_documents_by_join(client, current_collection_id, from_collection_id, loc
                 print str(e);
                 return [ ];
     return documents
+
+def get_documents_stream(client, collection_id, find_attributes={}, find_criteria={}, get_one_element=None, enableDistinct=None, display_obj_ids=0):
+    find_criteria['_id'] = display_obj_ids;
+    if client is not None:
+        db = client[mongodb_db_name];
+        collection = db[collection_id];
+        try:
+            if get_one_element is None:
+                if enableDistinct is None:
+                    for doc in collection.find( find_attributes, find_criteria ):
+                        yield doc
+                else:
+                    for doc in collection.find( find_attributes, find_criteria ).distinct( enableDistinct ):
+                        yield doc
+            else:
+                if enableDistinct is None:
+                    for doc in collection.find( find_attributes, find_criteria ):
+                        yield doc[ get_one_element ]
+                else:
+                    for doc in collection.find( find_attributes, find_criteria ).distinct( enableDistinct ):
+                        yield doc[ get_one_element ]
+            yield 'EOQ'
+        except Exception as e:
+            client.close();
+            client = getClient();
+            print str(e);

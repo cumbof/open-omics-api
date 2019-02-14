@@ -71,16 +71,16 @@ metadata:
         list of all sources (e.g. GDC)
     /metadata/source/<source>/attribute/<attribute>/all
         return a list of all possible values for a specific attribute (dictionary)
-    /metadata/source/<source>/attribute/<attribute>/value/<value>/aliquots
+    /metadata/source/<source>/attribute/<attribute>/value/<value>/urls
         return a list of all related aliquots with a list of endpoints:
         /experiment/source/<source>/program/<program>/tumor/<tumor>/datatype/<datatype>/aliquot/<aliquot>/all
     /metadata/attribute/<attribute>/all
         return a list of all possible values for a specific attribute (dictionary)
-    /metadata/attribute/<attribute>/value/<value>/aliquots
+    /metadata/attribute/<attribute>/value/<value>/urls
         return a list of all related aliquots with a list of endpoints:
         /experiment/source/<source>/program/<program>/tumor/<tumor>/datatype/<datatype>/aliquot/<aliquot>/all
-    /metadata/aliquot/<aliquot>/list
+    /metadata/aliquot/<aliquot>/urls
         return a list of endpoints:
         /experiment/source/<source>/program/<program>/tumor/<tumor>/datatype/<datatype>/aliquot/<aliquot>/all
-    /metadata/attribute/<attribute>/value/<value>/list
-        return a list of metadata related to the specified attribute-value couple
+    /metadata/attribute/<attribute>/value/<value>/aliquots
+        return a list of aliquots related to the specified attribute-value couple

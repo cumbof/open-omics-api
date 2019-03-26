@@ -1,4 +1,4 @@
-# open-genomics-api
+# open-omics-api
 
 ### TODO
 1. ~~creare indici~~ (done)

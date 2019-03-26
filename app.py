@@ -29,8 +29,12 @@ if __name__ == '__main__':
     # initialize app
     # http://blog.luisrei.com/articles/flaskrest.html
     app = Flask(__name__);
+    # set application root
+    app.config[ 'APPLICATION_ROOT' ] = str(config["app"]["web_root"])
     # register routes Blueprint
-    app.register_blueprint(blueprint); # retrieve and register routes from __init__py in routes dir
+    #app.register_blueprint(blueprint); # retrieve and register routes from __init__py in routes dir
+    # and set application root
+    app.register_blueprint(blueprint, url_prefix=str(config['app']['web_root']));
     
     # if debug=True -> it will print out possible Python errors on the web page
     app_debug = str(config["app"]["debug"]);

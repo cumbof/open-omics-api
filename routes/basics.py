@@ -67,7 +67,7 @@ def routes():
 
 @blueprint.route("/api/documentation")
 def documentation():
-    return redirect("https://opengenomics.docs.apiary.io/", code=302);
+    return redirect("https://openomics.docs.apiary.io/", code=302);
 
 @blueprint.route("/api/version")
 def api_version():

@@ -625,7 +625,7 @@ def experiment_aliquot_list(aliquot):
     values = get_documents(mongodb_client, "metadata", find_attributes={ 'gdc__aliquots__aliquot_id': aliquot }, find_criteria={ 'source':1, 'gdc__program__name':1, 'gdc__project__project_id':1, 'gdc__data_type':1 })
     hits = [ ]
     for val in values:
-        hits.append( "/experiment/source/"+val["source"]+"/program/"+val["gdc__program__name"]+"/tumor/"+val["gdc__project__project_id"]+"/datatype/"+val["gdc__data_type"].lower().replace(" ","")+"/aliquot/"+aliquot+"/all" )
+        hits.append( "/experiment/source/"+val["source"].lower()+"/program/"+val["gdc__program__name"].lower()+"/tumor/"+val["gdc__project__project_id"].lower()+"/datatype/"+val["gdc__data_type"].lower().replace(" ","")+"/aliquot/"+aliquot+"/all" )
     data = {
         'aliquot': aliquot,
         'hits': hits

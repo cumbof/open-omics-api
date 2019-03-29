@@ -35,7 +35,6 @@ def routes():
                 '/experiment/tumors', 
                 '/experiment/programs',
                 '/experiment/source/<source>/programs',
-                '/experiment/source/<source>/aliquots',
                 '/experiment/source/<source>/datatypes',
                 '/experiment/source/<source>/tumors',
                 '/experiment/source/<source>/program/<program>/aliquots',

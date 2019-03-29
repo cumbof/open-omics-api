@@ -474,6 +474,7 @@ def experiment_source_program_tumor_datatype_aliquot_coordinates(source, program
         'aliquot': aliquot,
         'coordinates': [ ]
     }
+    mongodb_client = getClient()
     collection_name = ""
     collection_from_name = ""
     join_field = ""

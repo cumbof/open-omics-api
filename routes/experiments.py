@@ -111,8 +111,8 @@ def experiment_source_programs(source):
     }
     for program in data_map['programs']:
         current_source_index = program['source']
-        for source in data_map['sources']:
-            if source['index'] == current_source_index and source['id'] == source:        
+        for sourceobj in data_map['sources']:
+            if sourceobj['index'] == current_source_index and sourceobj['id'] == source:        
                 data['programs'].append( {
                     'id': program['id'],
                     'description': program['description']

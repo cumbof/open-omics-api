@@ -311,7 +311,6 @@ def experiment_source_program_tumor_datatypes(source, program, tumor):
             program_index = program_obj['index']
             break
     if source_index > -1 and program_index > -1:
-        tumor_found = False
         for tumorobj in data_map['tumors']:
             if tumorobj['source'] == source_index and tumorobj['program'] == program_index and tumorobj['tag'] == tumor:
                 for datatype in data_map['datatypes']:

@@ -639,7 +639,7 @@ def experiment_aliquot_list(aliquot):
 def experiment_overlap(source, program, tumor, datatype, aliquot, chrom, start, end, strand):
     mongodb_client = getClient()
     collection_name = ''
-    find_attributes = {'chrom': chrom, 'start': {'$lte': int(end)}, 'end': {'$gte': int(start)}, 'strand': strand}
+    find_attributes = {'chrom': chrom, 'start': {'$gte': int(start)}, 'end': {'$lte': int(end)}, 'strand': strand}
     if datatype.strip().lower() == 'geneexpressionquantification':
         collection_name = 'annotation_geneexpression'
     elif datatype.strip().lower() == 'methylationbetavalue':

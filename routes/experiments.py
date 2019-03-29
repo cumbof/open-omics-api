@@ -121,6 +121,7 @@ def experiment_source_programs(source):
     resp = Response(js, status=200, mimetype='application/json');
     return resp;
 
+'''
 @blueprint.route("/experiment/source/<source>/aliquots")
 def experiment_source_aliquots(source):
     data = { 
@@ -145,6 +146,7 @@ def experiment_source_aliquots(source):
     js = json.dumps(data, indent=4, sort_keys=True);
     resp = Response(js, status=200, mimetype='application/json');
     return resp;
+'''
 
 @blueprint.route("/experiment/source/<source>/datatypes")
 def experiment_source_datatypes(source):

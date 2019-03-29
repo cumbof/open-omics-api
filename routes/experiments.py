@@ -200,6 +200,7 @@ def experiment_source_tumors(source):
     resp = Response(js, status=200, mimetype='application/json');
     return resp;
 
+'''
 @blueprint.route("/experiment/source/<source>/program/<program>/aliquots")
 def experiment_source_program_aliquots(source, program):
     data = { 
@@ -230,6 +231,7 @@ def experiment_source_program_aliquots(source, program):
     js = json.dumps(data, indent=4, sort_keys=True);
     resp = Response(js, status=200, mimetype='application/json');
     return resp;
+'''
 
 @blueprint.route("/experiment/source/<source>/program/<program>/datatypes")
 def experiment_source_program_datatypes(source, program):

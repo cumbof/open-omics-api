@@ -312,19 +312,17 @@ def experiment_source_program_tumor_datatypes(source, program, tumor):
             break
     if source_index > -1 and program_index > -1:
         tumor_found = False
-        for tumor in data_map['tumors']:
-            if tumor['source'] == source_index and tumor['program'] == program_index:
-                datatype_programs = datatype['programs']
-                for datatype_program in datatype_programs:
-                    if datatype_program == program_index:
-                        data['datatypes'].append( {
-                            'id': datatype['id'],
-                            'description': datatype['description']
-                        } )
-                        tumor_found = True
-                        break
-                if tumor_found:
-                    break
+        for tumorobj in data_map['tumors']:
+            if tumorobj['source'] == source_index and tumorobj['program'] == program_index and tumorobj['tag'] == tumor:
+                for datatype in data_map['datatypes']:
+                    datatype_programs = datatype['programs']
+                    for datatype_program in datatype_programs:
+                        if datatype_program == program_index:
+                            data['datatypes'].append( {
+                                'id': datatype['id'],
+                                'description': datatype['description']
+                            } )
+                break
     js = json.dumps(data, indent=4, sort_keys=True);
     resp = Response(js, status=200, mimetype='application/json');
     return resp;

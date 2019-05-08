@@ -1,7 +1,7 @@
 ---
 # application parameters
 app:
-  name: 'OpenGenomics'
+  name: 'OpenOmics'
   version: '0.1.0'
   host: '0.0.0.0'
   port: 8080
@@ -10,6 +10,7 @@ app:
   log_max_bytes: 10240
   log_backup_count: 10
   tmp_dir: './tmp/'
+  web_root: '/openomics'
 # mongodb connection parameters
 mongodb:
   #install_dir: '/usr/local/bin/'

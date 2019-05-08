@@ -111,8 +111,8 @@ def experiment_source_programs(source):
     }
     for program in data_map['programs']:
         current_source_index = program['source']
-        for source in data_map['sources']:
-            if source['index'] == current_source_index and source['id'] == source:        
+        for sourceobj in data_map['sources']:
+            if sourceobj['index'] == current_source_index and sourceobj['id'] == source:        
                 data['programs'].append( {
                     'id': program['id'],
                     'description': program['description']
@@ -121,6 +121,7 @@ def experiment_source_programs(source):
     resp = Response(js, status=200, mimetype='application/json');
     return resp;
 
+'''
 @blueprint.route("/experiment/source/<source>/aliquots")
 def experiment_source_aliquots(source):
     data = { 
@@ -145,6 +146,7 @@ def experiment_source_aliquots(source):
     js = json.dumps(data, indent=4, sort_keys=True);
     resp = Response(js, status=200, mimetype='application/json');
     return resp;
+'''
 
 @blueprint.route("/experiment/source/<source>/datatypes")
 def experiment_source_datatypes(source):
@@ -198,6 +200,7 @@ def experiment_source_tumors(source):
     resp = Response(js, status=200, mimetype='application/json');
     return resp;
 
+'''
 @blueprint.route("/experiment/source/<source>/program/<program>/aliquots")
 def experiment_source_program_aliquots(source, program):
     data = { 
@@ -228,6 +231,7 @@ def experiment_source_program_aliquots(source, program):
     js = json.dumps(data, indent=4, sort_keys=True);
     resp = Response(js, status=200, mimetype='application/json');
     return resp;
+'''
 
 @blueprint.route("/experiment/source/<source>/program/<program>/datatypes")
 def experiment_source_program_datatypes(source, program):
@@ -307,20 +311,17 @@ def experiment_source_program_tumor_datatypes(source, program, tumor):
             program_index = program_obj['index']
             break
     if source_index > -1 and program_index > -1:
-        tumor_found = False
-        for tumor in data_map['tumors']:
-            if tumor['source'] == source_index and tumor['program'] == program_index:
-                datatype_programs = datatype['programs']
-                for datatype_program in datatype_programs:
-                    if datatype_program == program_index:
-                        data['datatypes'].append( {
-                            'id': datatype['id'],
-                            'description': datatype['description']
-                        } )
-                        tumor_found = True
-                        break
-                if tumor_found:
-                    break
+        for tumorobj in data_map['tumors']:
+            if tumorobj['source'] == source_index and tumorobj['program'] == program_index and tumorobj['tag'] == tumor:
+                for datatype in data_map['datatypes']:
+                    datatype_programs = datatype['programs']
+                    for datatype_program in datatype_programs:
+                        if datatype_program == program_index:
+                            data['datatypes'].append( {
+                                'id': datatype['id'],
+                                'description': datatype['description']
+                            } )
+                break
     js = json.dumps(data, indent=4, sort_keys=True);
     resp = Response(js, status=200, mimetype='application/json');
     return resp;
@@ -357,43 +358,6 @@ def experiment_source_program_tumor_aliquots(source, program, tumor):
     resp = Response(js, status=200, mimetype='application/json');
     return resp;
 
-#@blueprint.route("/experiment/source/<source>/program/<program>/tumor/<tumor>/datatype/<datatype>/aliquots")
-# def experiment_source_program_tumor_datatype_aliquots(source, program, tumor, datatype):
-#     data = { 
-#         'source': source,
-#         'program': program,
-#         'tumor': tumor,
-#         'datatype': datatype,
-#         'aliquots': [ ]
-#     }
-#     source_index = -1
-#     for source_obj in data_map['sources']:
-#         if source_obj['id'] == source:
-#             source_index = source_obj['index']
-#             break
-#     program_index = -1
-#     for program_obj in data_map['programs']:
-#         if program_obj['id'] == program:
-#             program_index = program_obj['index']
-#             break
-#     datatype_index = -1
-#     for datatype_obj in data_map['datatypes']:
-#         if datatype_obj['id'] == datatype:
-#             datatype_index = datatype_obj['index']
-#             break
-#     if source_index > -1 and program_index > -1 and datatype_index > -1:
-#         tumors_related_to_source = [ tumor_obj['tag'] for tumor_obj in data_map['tumors'] if tumor_obj['source'] == source_index and tumor_obj['program'] == program_index ]
-#         if tumor in tumors_related_to_source:
-#             # TODO: get only available data types for that particular tumor
-#             tumor_datatypes_indices = [ dt for dt in tumor_obj['datatypes'] for tumor_obj in data_map['tumors'] if tumor_obj['source'] == source_index and tumor_obj['program'] == program_index and tumor_obj['tag'] == tumor ]
-#             if datatype_index in tumor_datatypes_indices:
-#                 mongodb_client = getClient()
-#                 aliquots = get_documents(mongodb_client, 'experiment_'+datatype, find_attributes={ 'tumor': tumor }, find_criteria={ 'aliquot':1 }, get_one_element="aliquot")
-#                 #data['aliquots'] = list(set(aliquots))
-#                 data['aliquots'] = aliquots
-#     js = json.dumps(data, indent=4, sort_keys=True);
-#     resp = Response(js, status=200, mimetype='application/json');
-#     return resp;
 @blueprint.route("/experiment/source/<source>/program/<program>/tumor/<tumor>/datatype/<datatype>/aliquots")
 def experiment_source_program_tumor_datatype_aliquots(source, program, tumor, datatype):
     data = { 
@@ -425,19 +389,19 @@ def experiment_source_program_tumor_datatype_aliquots(source, program, tumor, da
             tumor_datatypes_indices = [ dt for dt in tumor_obj['datatypes'] for tumor_obj in data_map['tumors'] if tumor_obj['source'] == source_index and tumor_obj['program'] == program_index and tumor_obj['tag'] == tumor ]
             if datatype_index in tumor_datatypes_indices:
                 mongodb_client = getClient()
-                ##aliquots = get_documents(mongodb_client, 'experiment_'+datatype, find_attributes={ 'tumor': tumor }, find_criteria={ 'aliquot':1 }, get_one_element="aliquot")
-                #data['aliquots'] = list(set(aliquots))
-                ##data['aliquots'] = aliquots
+                aliquots = get_documents(mongodb_client, 'experiment_'+datatype, find_attributes={ 'tumor': tumor }, find_criteria={ 'aliquot':1 }, get_one_element="aliquot")
+                data['aliquots'] = list(set(aliquots))
+                #data['aliquots'] = aliquots
                 
-                def generatorRes(mongodb_client, source, program, tumor, datatype):
-                    yield '{ \'source\': '+source+',\'program\': '+program+',\'tumor\': '+tumor+',\'datatype\': '+datatype+',\'aliquots\': ['
-                    for elem in get_documents_stream(mongodb_client, 'experiment_'+datatype, find_attributes={ 'tumor': tumor }, find_criteria={ 'aliquot':1 }, get_one_element="aliquot", enableDistinct="aliquot"):
-                        otherElems = ', '
-                        if elem == 'EOQ':
-                            otherElems = ''
-                        yield json.dumps(elem) + otherElems
-                    yield '] }'
-                return Response( generatorRes(mongodb_client, source, program, tumor, datatype), mimetype='application/json' )
+                #def generatorRes(mongodb_client, source, program, tumor, datatype):
+                #    yield '{ \'source\': '+source+',\'program\': '+program+',\'tumor\': '+tumor+',\'datatype\': '+datatype+',\'aliquots\': ['
+                #    for elem in get_documents_stream(mongodb_client, 'experiment_'+datatype, find_attributes={ 'tumor': tumor }, find_criteria={ 'aliquot':1 }, get_one_element="aliquot", enableDistinct="aliquot"):
+                #        otherElems = ', '
+                #        if elem == 'EOQ':
+                #            otherElems = ''
+                #        yield json.dumps(elem) + otherElems
+                #    yield '] }'
+                #return Response( generatorRes(mongodb_client, source, program, tumor, datatype), mimetype='application/json' )
     
     js = json.dumps(data, indent=4, sort_keys=True);
     resp = Response(js, status=200, mimetype='application/json');
@@ -510,6 +474,7 @@ def experiment_source_program_tumor_datatype_aliquot_coordinates(source, program
         'aliquot': aliquot,
         'coordinates': [ ]
     }
+    mongodb_client = getClient()
     collection_name = ""
     collection_from_name = ""
     join_field = ""
@@ -658,10 +623,10 @@ def experiment_source_program_tumor_datatype_aliquot_elemid_all(source, program,
 @blueprint.route("/experiment/aliquot/<aliquot>/list")
 def experiment_aliquot_list(aliquot):
     mongodb_client = getClient()
-    values = get_documents(mongodb_client, "metadata", find_attributes={ 'gdc__aliquots__aliquot_id': aliquot }, find_criteria={ 'source':1, 'gdc__program__name':1, 'gdc__project__project_id':1, 'gdc__type':1 })
+    values = get_documents(mongodb_client, "metadata", find_attributes={ 'gdc__aliquots__aliquot_id': aliquot }, find_criteria={ 'source':1, 'gdc__program__name':1, 'gdc__project__project_id':1, 'gdc__data_type':1 })
     hits = [ ]
     for val in values:
-        hits.append( "/experiment/source/"+val["source"]+"/program/"+val["gdc__program__name"]+"/tumor/"+val["gdc__project__project_id"]+"/datatype/"+val["gdc__type"]+"/aliquot/"+aliquot+"/all" )
+        hits.append( "/experiment/source/"+val["source"].lower()+"/program/"+val["gdc__program__name"].lower()+"/tumor/"+val["gdc__project__project_id"].lower()+"/datatype/"+val["gdc__data_type"].lower().replace(" ","")+"/aliquot/"+aliquot+"/all" )
     data = {
         'aliquot': aliquot,
         'hits': hits
@@ -674,7 +639,7 @@ def experiment_aliquot_list(aliquot):
 def experiment_overlap(source, program, tumor, datatype, aliquot, chrom, start, end, strand):
     mongodb_client = getClient()
     collection_name = ''
-    find_attributes = {'chrom': chrom, 'start': {'$lte': int(end)}, 'end': {'$gte': int(start)}, 'strand': strand}
+    find_attributes = {'chrom': chrom, 'start': {'$gte': int(start)}, 'end': {'$lte': int(end)}, 'strand': strand}
     if datatype.strip().lower() == 'geneexpressionquantification':
         collection_name = 'annotation_geneexpression'
     elif datatype.strip().lower() == 'methylationbetavalue':

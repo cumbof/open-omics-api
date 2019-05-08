@@ -35,10 +35,8 @@ def routes():
                 '/experiment/tumors', 
                 '/experiment/programs',
                 '/experiment/source/<source>/programs',
-                '/experiment/source/<source>/aliquots',
                 '/experiment/source/<source>/datatypes',
                 '/experiment/source/<source>/tumors',
-                '/experiment/source/<source>/program/<program>/aliquots',
                 '/experiment/source/<source>/program/<program>/datatypes',
                 '/experiment/source/<source>/program/<program>/tumors',
                 '/experiment/source/<source>/program/<program>/tumor/<tumor>/datatypes',
@@ -67,7 +65,7 @@ def routes():
 
 @blueprint.route("/api/documentation")
 def documentation():
-    return redirect("https://opengenomics.docs.apiary.io/", code=302);
+    return redirect("https://openomics.docs.apiary.io/", code=302);
 
 @blueprint.route("/api/version")
 def api_version():

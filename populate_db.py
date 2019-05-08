@@ -29,7 +29,7 @@ index_map = {
 }
 
 client = pymongo.MongoClient("mongodb://localhost:27017/")
-mydb = client["og"]
+mydb = client["openomics"]
 
 def poputate_experiments(mydb, experiment_base_path):
     coll2indexMap = { }

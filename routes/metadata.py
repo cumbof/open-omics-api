@@ -34,7 +34,7 @@ def metadata_source_attribute_all(source, attribute):
     resp = Response(js, status=200, mimetype='application/json');
     return resp;
 
-@blueprint.route("/metadata/source/<source>/attribute/<attribute>/value/<value>/aliquots") #nosense 
+@blueprint.route("/metadata/source/<source>/attribute/<attribute>/value/<value>/urls") 
 def metadata_source_attribute_value(source, attribute, value):
     mongodb_client = getClient()
     values = get_documents(mongodb_client, "metadata", find_attributes={ 'source': source, attribute: value }, find_criteria={ 'gdc__program__name':1, 'gdc__project__project_id':1, 'gdc__type':1, 'gdc__aliquots__aliquot_id':1 })
@@ -68,7 +68,7 @@ def metadata_attribute_all(attribute):
     resp = Response(js, status=200, mimetype='application/json');
     return resp;
 
-@blueprint.route("/metadata/attribute/<attribute>/value/<value>/aliquots")
+@blueprint.route("/metadata/attribute/<attribute>/value/<value>/urls")
 def metadata_attribute_value(attribute, value):
     mongodb_client = getClient()
     values = get_documents(mongodb_client, "metadata", find_attributes={ attribute: value }, find_criteria={ 'source':1, 'gdc__program__name':1, 'gdc__project__project_id':1, 'gdc__type':1, 'gdc__aliquots__aliquot_id':1 })
@@ -85,7 +85,7 @@ def metadata_attribute_value(attribute, value):
     resp = Response(js, status=200, mimetype='application/json');
     return resp;
 
-@blueprint.route("/metadata/aliquot/<aliquot>/list")
+@blueprint.route("/metadata/aliquot/<aliquot>/urls")
 def metadata_aliquot(aliquot):
     mongodb_client = getClient()
     values = get_documents(mongodb_client, "metadata", find_attributes={ 'gdc__aliquots__aliquot_id': aliquot }, find_criteria={ 'source':1, 'gdc__program__name':1, 'gdc__project__project_id':1, 'gdc__type':1 }) #'source':1 non esiste questo campo
@@ -101,7 +101,7 @@ def metadata_aliquot(aliquot):
     resp = Response(js, status=200, mimetype='application/json');
     return resp;
 
-@blueprint.route("/metadata/attribute/<attribute>/value/<value>/aliquots_list") #???
+@blueprint.route("/metadata/attribute/<attribute>/value/<value>/aliquots")
 def metadata_aliquot_list(attribute, value):
     mongodb_client = getClient()
     values = get_documents(mongodb_client, "metadata", find_attributes={ attribute: value }, find_criteria={ 'source':1, 'gdc__program__name':1, 'gdc__project__project_id':1, 'gdc__type':1, 'gdc__aliquots__aliquot_id':1 })
@@ -113,4 +113,3 @@ def metadata_aliquot_list(attribute, value):
     js = json.dumps(data, indent=4, sort_keys=True);
     resp = Response(js, status=200, mimetype='application/json');
     return resp;
-

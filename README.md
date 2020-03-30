@@ -1,6 +1,7 @@
-# open-omics-api
+# Open-Omics APIs
 
-### TODO
-1. ~~creare indici~~ (done)
-2. aggiungere parametro opzionale agli endpoint (verificare quali) per la scelta del formato di output (bed, gtf, csv) - per bed e gtf verificare che il formato ammetta righe commentate e usare un commento come prima riga per definire l'header
-3. aggiungere endpoint /experiment/download [POST] con i parametri sotto definiti. Se aliquot non è presente ricreare tutto il dataset nel formato specificato, comprimerlo in tar.gz e restituire il link al download. Se aliquot è definito, ricreare solo l'esperimento corrispondente nel formato richiesto e comprimerlo per poi restituire il link al download.
+we propose design principles for organizing biomedical data and make them easily accessible through the development of a collection of Application Programming Interfaces (APIs), in order to provide a flexible framework that we called OpenOmics. To prove the validity of our approach, we apply it on data extracted from The Genomic Data Commons repository. OpenOmics is free and open source for allowing everyone to extend the set of provided APIs with new features that may be able to answer specific biological questions.
+
+OpenOmics is available at [http://bioinformatics.iasi.cnr.it/openomics/api/routes](http://bioinformatics.iasi.cnr.it/openomics/api/routes)
+
+Please credit OpenOmics in your manuscript by citing [Smart Persistence and Accessibility of Genomic and Clinical Data](https://doi.org/10.1007/978-3-030-27684-3_2) by Eleonora Cappelli, Emanuel Weitschek, and Fabio Cumbo.

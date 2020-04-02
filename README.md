@@ -4,4 +4,8 @@ We propose design principles for organizing biomedical data and make them easily
 
 OpenOmics is available at [http://bioinformatics.iasi.cnr.it/openomics/api/routes](http://bioinformatics.iasi.cnr.it/openomics/api/routes)
 
-Please credit OpenOmics in your manuscript by citing [Smart Persistence and Accessibility of Genomic and Clinical Data](https://doi.org/10.1007/978-3-030-27684-3_2) by Eleonora Cappelli, Emanuel Weitschek, and Fabio Cumbo.
+### Credits
+
+Please credit OpenOmics in your manuscript by citing:
+
+> Eleonora Cappelli, Emanuel Weitschek, and Fabio Cumbo. "Smart Persistence and Accessibility of Genomic and Clinical Data." International Conference on Database and Expert Systems Applications. Springer, Cham, 2019. [https://doi.org/10.1007/978-3-030-27684-3_2](https://doi.org/10.1007/978-3-030-27684-3_2)

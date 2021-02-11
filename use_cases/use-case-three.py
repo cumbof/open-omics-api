@@ -9,16 +9,13 @@ patient_attribute = 'biospecimen__shared__bcr_patient_barcode'
 
 # retrieve the patient id related to the specified aliquot
 patient_barcode = json.loads( urllib.request.urlopen(
-                        apis_base_url+
-                        '/metadata/attribute/{}/value/{}/list'
-                        .format(aliquot_attribute,
-                                aliquot_value)
+                        '{}/metadata/attribute/{}/value/{}/list'
+                                .format(apis_base_url, aliquot_attribute, aliquot_value)
                   ).read() )[ 'hits' ][ 0 ][ patient_attribute ]
 
 # extract all the experiments related to the patient barcode
 for aliquot in json.loads( urllib.request.urlopen(
-                    apis_base_url+
-                    '/metadata/attribute/{}/value/{}/aliquots'
-                    .format(patient_attribute, patient_barcode)
+                    '{}/metadata/attribute/{}/value/{}/aliquots'
+                        .format(apis_base_url, patient_attribute, patient_barcode)
                ).read() )[ 'hits' ]:
     print( aliquot )

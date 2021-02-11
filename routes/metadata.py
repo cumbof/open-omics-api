@@ -13,9 +13,9 @@ def metadata_sources():
             }
         ]
     }
-    js = json.dumps(data, indent=4, sort_keys=True);
-    resp = Response(js, status=200, mimetype='application/json');
-    return resp;
+    js = json.dumps(data, indent=4, sort_keys=True)
+    resp = Response(js, status=200, mimetype='application/json')
+    return resp
 
 @blueprint.route("/metadata/source/<source>/attribute/<attribute>/all")
 def metadata_source_attribute_all(source, attribute):
@@ -30,9 +30,9 @@ def metadata_source_attribute_all(source, attribute):
         'attribute': attribute,
         'values': list(parsed_values)
     }
-    js = json.dumps(data, indent=4, sort_keys=True);
-    resp = Response(js, status=200, mimetype='application/json');
-    return resp;
+    js = json.dumps(data, indent=4, sort_keys=True)
+    resp = Response(js, status=200, mimetype='application/json')
+    return resp
 
 @blueprint.route("/metadata/source/<source>/attribute/<attribute>/value/<value>/urls") 
 def metadata_source_attribute_value(source, attribute, value):
@@ -48,9 +48,9 @@ def metadata_source_attribute_value(source, attribute, value):
         'value': value,
         'hits': hits
     }
-    js = json.dumps(data, indent=4, sort_keys=True);
-    resp = Response(js, status=200, mimetype='application/json');
-    return resp;
+    js = json.dumps(data, indent=4, sort_keys=True)
+    resp = Response(js, status=200, mimetype='application/json')
+    return resp
 
 @blueprint.route("/metadata/attribute/<attribute>/all")
 def metadata_attribute_all(attribute):
@@ -64,9 +64,9 @@ def metadata_attribute_all(attribute):
         'attribute': attribute,
         'values': list(parsed_values)
     }
-    js = json.dumps(data, indent=4, sort_keys=True);
-    resp = Response(js, status=200, mimetype='application/json');
-    return resp;
+    js = json.dumps(data, indent=4, sort_keys=True)
+    resp = Response(js, status=200, mimetype='application/json')
+    return resp
 
 @blueprint.route("/metadata/attribute/<attribute>/value/<value>/urls")
 def metadata_attribute_value(attribute, value):
@@ -81,9 +81,9 @@ def metadata_attribute_value(attribute, value):
         'value': value,
         'hits': hits
     }
-    js = json.dumps(data, indent=4, sort_keys=True);
-    resp = Response(js, status=200, mimetype='application/json');
-    return resp;
+    js = json.dumps(data, indent=4, sort_keys=True)
+    resp = Response(js, status=200, mimetype='application/json')
+    return resp
 
 @blueprint.route("/metadata/aliquot/<aliquot>/urls")
 def metadata_aliquot(aliquot):
@@ -97,9 +97,9 @@ def metadata_aliquot(aliquot):
         'aliquot': aliquot,
         'hits': hits
     }
-    js = json.dumps(data, indent=4, sort_keys=True);
-    resp = Response(js, status=200, mimetype='application/json');
-    return resp;
+    js = json.dumps(data, indent=4, sort_keys=True)
+    resp = Response(js, status=200, mimetype='application/json')
+    return resp
 
 @blueprint.route("/metadata/attribute/<attribute>/value/<value>/aliquots")
 def metadata_aliquot_list(attribute, value):
@@ -110,6 +110,6 @@ def metadata_aliquot_list(attribute, value):
         'value': value,
         'hits': values
     }
-    js = json.dumps(data, indent=4, sort_keys=True);
-    resp = Response(js, status=200, mimetype='application/json');
-    return resp;
+    js = json.dumps(data, indent=4, sort_keys=True)
+    resp = Response(js, status=200, mimetype='application/json')
+    return resp

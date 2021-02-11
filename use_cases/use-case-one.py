@@ -9,34 +9,29 @@ datatype = 'maskedsomaticmutation'
 # retrieve all the ethnicities in the 'metadata' collection
 ethnicity_attribute = 'gdc__demographic__ethnicity'
 ethnicities = json.loads( urllib.request.urlopen(
-                        apis_base_url+
-                        '/metadata/source/{}/attribute/{}/all'
-                        .format(source, ethnicity_attribute)
+                        '{}/metadata/source/{}/attribute/{}/all'
+                            .format(apis_base_url, source, ethnicity_attribute)
               ).read() )
 
 for ethnicity_value in ethnicities['values']:
     distinct_somatic_mutations = list()
     # retrieve aliquots related to the current ethnicity
     aliquots = json.loads( urllib.request.urlopen(
-                    apis_base_url+
-                    '/metadata/source/{}/attribute/{}/'+
-                    'value/{}/aliquots'
-                    .format(source, ethnicity_attribute, 
-                            ethnicity_value)
+                    '{}/metadata/source/{}/attribute/{}/value/{}/aliquots'
+                        .format(apis_base_url, source, ethnicity_attribute, ethnicity_value)
                ).read() )
     
     for aliquot_url in aliquots['hits']:
-        if '/datatype/'+datatype in aliquot_url:
+        if '/datatype/{}'.format(datatype) in aliquot_url:
             coords_position = aliquot_url.rfind('all')
-            coords_url = aliquot_url[:coords_position]+ 
-                         'coordinates'
+            coords_url = '{}coordinates'.format(aliquot_url[:coords_position])
             # extract the somatic mutation positions available
             # in the experiment related to the current aliquot
             coords_list = json.loads( urllib.request.urlopen(
                                     apis_base_url+
                                     coords_url
                           ).read() )
-            for coordinates in coordinates_list['coordinates']:
+            for coordinates in coords_list['coordinates']:
                 coords_arr = [
                     coordinates['chrom'], coordinates['start'],
                     coordinates['end'], coordinates['strand']
@@ -44,6 +39,7 @@ for ethnicity_value in ethnicities['values']:
                 if coords_arr not in distinct_somatic_mutations:
                     distinct_somatic_mutations.append(coords_arr)
     
-    print( 'Number of distinct somatic mutation for the '+
-           'ethnicity {} is {}'.format( ethnicity_value, 
-           str( len(distinct_somatic_mutations) ) ) )
+    print( 'Number of distinct somatic mutation for the ethnicity {} is {}'.format( 
+                ethnicity_value, 
+                len(distinct_somatic_mutations) 
+         ) )

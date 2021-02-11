@@ -2,8 +2,8 @@ import os, re, pymongo
 import xml.etree.ElementTree as ET
 
 ftp_root_base_path = "/FTP/ftp-root/opengdc/bed/"
-annotation_base_path = ftp_root_base_path + "_annotations/"
-experiment_base_path = ftp_root_base_path + "tcga/"
+annotation_base_path = os.path.join(ftp_root_base_path, "_annotations")
+experiment_base_path = os.path.join(ftp_root_base_path, "tcga")
 
 exclude_idx_map = {
     "gene_expression_quantification": [ 0, 1, 2, 3, 5, 6, 7 ],
@@ -42,7 +42,8 @@ def poputate_experiments(mydb, experiment_base_path):
                         exp_collection = mydb[ "experiment_" + datatype_dir.lower().replace("_", "") ]
                         meta_collection = mydb[ "metadata" ]
                         datatype_dir_path = os.path.join(tumor_dir_path, datatype_dir)
-                        print('--------------------'+'\ndata processing from '+datatype_dir_path)
+                        print('--------------------')
+                        print('data processing from {}'.format(datatype_dir_path))
                         for subdir, dirs, files in os.walk( datatype_dir_path ):
                             bed_file_path = None
                             meta_file_path = None
@@ -58,12 +59,12 @@ def poputate_experiments(mydb, experiment_base_path):
                                     }
                                     exp_docs = create_documents(bed_file_path, schema_attributes, schema_types, exclude_idx=exclude_idx_map[datatype_dir], additional_entries=additional_values)
                                     exp_collection.insert_many(exp_docs)
-                                    print 'bed: ' + file                         
+                                    print('bed: {}'.format(file))
                                 elif file.endswith(".meta"):
                                     meta_file_path = os.path.join(datatype_dir_path, file)
                                     meta_doc = create_meta_document(meta_file_path)
                                     meta_collection.insert_one(meta_doc)
-                                    print 'meta: ' + file
+                                    print('meta: {}'.format(file))
                             
 def populate_annotations(mydb, annotation_base_path):
     for subdir_base, dirs_base, files_base in os.walk( annotation_base_path ):
@@ -146,9 +147,8 @@ def get_schema_from_XML(schema_file_path):
 if __name__ == '__main__':
     populate_annotations(mydb, annotation_base_path)
     poputate_experiments(mydb, experiment_base_path)
-    print '---------- start indexes ----------'
+    print('---------- start indexes ----------')
     for collection in index_map:
-        print collection
+        print(collection)
         createIndex(collection, index_map[collection])
-    print '---------- end indexes ----------'
-
+    print('---------- end indexes ----------')

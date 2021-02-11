@@ -8,11 +8,8 @@ annotation = 'humanmethylation'
 wash7p = [ 'chr1', 14404, 29570, '-' ]
 
 # extract methylated site coordinates overlapped to WASH7P
-for overlap in = json.loads( urllib.request.urlopen(
-                    apis_base_url+
-                    '/annotation/{}/overlap/chrom/{}/'+
-                    'start/{}/end/{}/end/{}/strand/{}'
-                    .format(annotation, wash7p[0], wash7p[1],
-                        wash7p[2], wash7p[3])
-                 ).read() )[ 'hits' ]:
-    print( str( hit ) )
+for overlap in json.loads( urllib.request.urlopen(
+                    '{}/annotation/{}/overlap/chrom/{}/start/{}/end/{}/end/{}/strand/{}'
+                        .format(apis_base_url, annotation, wash7p[0], wash7p[1], wash7p[2], wash7p[3])
+                ).read() )[ 'hits' ]:
+    print( overlap )

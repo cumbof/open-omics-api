@@ -1,15 +1,14 @@
 from flask import Response, redirect
 from . import blueprint
-
 import json, yaml
 
 # load config
-config = None;
+config = None
 with open("./config.yaml", 'r') as cfg:
-    config = yaml.load(cfg);
+    config = yaml.load(cfg)
 
-app_name = str(config["app"]["name"]);
-app_version = str(config["app"]["version"]);
+app_name = str(config["app"]["name"])
+app_version = str(config["app"]["version"])
 
 @blueprint.route("/api/routes")
 def routes():
@@ -58,23 +57,23 @@ def routes():
                 '/metadata/attribute/<attribute>/value/<value>/aliquots'
             ]
         }
-    };
-    js = json.dumps(data, indent=4, sort_keys=True);
-    resp = Response(js, status=200, mimetype='application/json');
-    return resp;
+    }
+    js = json.dumps(data, indent=4, sort_keys=True)
+    resp = Response(js, status=200, mimetype='application/json')
+    return resp
 
 @blueprint.route("/api/documentation")
 def documentation():
-    return redirect("https://openomics.docs.apiary.io/", code=302);
+    return redirect("https://openomics.docs.apiary.io/", code=302)
 
 @blueprint.route("/api/version")
 def api_version():
     data = {
         'version': app_version
     }
-    js = json.dumps(data, indent=4, sort_keys=True);
-    resp = Response(js, status=200, mimetype='application/json');
-    return resp;
+    js = json.dumps(data, indent=4, sort_keys=True)
+    resp = Response(js, status=200, mimetype='application/json')
+    return resp
 
 @blueprint.route("/api/sources")
 def api_sources():
@@ -83,6 +82,6 @@ def api_sources():
             'Genomic Data Commons (GDC)'
         ]
     }
-    js = json.dumps(data, indent=4, sort_keys=True);
-    resp = Response(js, status=200, mimetype='application/json');
-    return resp;
+    js = json.dumps(data, indent=4, sort_keys=True)
+    resp = Response(js, status=200, mimetype='application/json')
+    return resp

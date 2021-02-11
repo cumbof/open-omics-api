@@ -4,9 +4,9 @@ from flask import request, Response, session
 from . import blueprint
 
 # load data map
-data_map = None;
+data_map = None
 with open("./data.yaml", 'r') as dmap:
-    data_map = yaml.load(dmap);
+    data_map = yaml.load(dmap)
 
 @blueprint.route("/experiment/sources")
 def experiment_sources():
@@ -16,9 +16,9 @@ def experiment_sources():
             'id': source['id'],
             'description': source['description']
         } )
-    js = json.dumps(data, indent=4, sort_keys=True);
-    resp = Response(js, status=200, mimetype='application/json');
-    return resp;
+    js = json.dumps(data, indent=4, sort_keys=True)
+    resp = Response(js, status=200, mimetype='application/json')
+    return resp
 
 @blueprint.route("/experiment/datatypes")
 def experiment_datatypes():
@@ -28,9 +28,9 @@ def experiment_datatypes():
             'id': datatype['id'],
             'description': datatype['description']
         } )
-    js = json.dumps(data, indent=4, sort_keys=True);
-    resp = Response(js, status=200, mimetype='application/json');
-    return resp;
+    js = json.dumps(data, indent=4, sort_keys=True)
+    resp = Response(js, status=200, mimetype='application/json')
+    return resp
 
 @blueprint.route("/experiment/tumors")
 def experiment_tumors():
@@ -75,9 +75,9 @@ def experiment_tumors():
             },
             'datatypes': datatypes
         } )
-    js = json.dumps(data, indent=4, sort_keys=True);
-    resp = Response(js, status=200, mimetype='application/json');
-    return resp;
+    js = json.dumps(data, indent=4, sort_keys=True)
+    resp = Response(js, status=200, mimetype='application/json')
+    return resp
 
 @blueprint.route("/experiment/programs")
 def experiment_programs():
@@ -99,9 +99,9 @@ def experiment_programs():
                 'description': source_description
             }
         } )
-    js = json.dumps(data, indent=4, sort_keys=True);
-    resp = Response(js, status=200, mimetype='application/json');
-    return resp;
+    js = json.dumps(data, indent=4, sort_keys=True)
+    resp = Response(js, status=200, mimetype='application/json')
+    return resp
 
 @blueprint.route("/experiment/source/<source>/programs")
 def experiment_source_programs(source):
@@ -117,9 +117,9 @@ def experiment_source_programs(source):
                     'id': program['id'],
                     'description': program['description']
                 } )
-    js = json.dumps(data, indent=4, sort_keys=True);
-    resp = Response(js, status=200, mimetype='application/json');
-    return resp;
+    js = json.dumps(data, indent=4, sort_keys=True)
+    resp = Response(js, status=200, mimetype='application/json')
+    return resp
 
 '''
 @blueprint.route("/experiment/source/<source>/aliquots")
@@ -143,9 +143,9 @@ def experiment_source_aliquots(source):
             for tumor in tumors_related_to_source:
                 aliquots = aliquots + get_documents(mongodb_client, collection, find_attributes={ 'tumor': tumor }, find_criteria={ 'aliquot':1 }, get_one_element="aliquot")
         data['aliquots'] = list(set(aliquots))
-    js = json.dumps(data, indent=4, sort_keys=True);
-    resp = Response(js, status=200, mimetype='application/json');
-    return resp;
+    js = json.dumps(data, indent=4, sort_keys=True)
+    resp = Response(js, status=200, mimetype='application/json')
+    return resp
 '''
 
 @blueprint.route("/experiment/source/<source>/datatypes")
@@ -174,9 +174,9 @@ def experiment_source_datatypes(source):
                             'description': datatype['description']
                         } )
                         break
-    js = json.dumps(data, indent=4, sort_keys=True);
-    resp = Response(js, status=200, mimetype='application/json');
-    return resp;
+    js = json.dumps(data, indent=4, sort_keys=True)
+    resp = Response(js, status=200, mimetype='application/json')
+    return resp
 
 @blueprint.route("/experiment/source/<source>/tumors")
 def experiment_source_tumors(source):
@@ -196,9 +196,9 @@ def experiment_source_tumors(source):
                     'id': tumor['tag'],
                     'description': tumor['description']
                 } )
-    js = json.dumps(data, indent=4, sort_keys=True);
-    resp = Response(js, status=200, mimetype='application/json');
-    return resp;
+    js = json.dumps(data, indent=4, sort_keys=True)
+    resp = Response(js, status=200, mimetype='application/json')
+    return resp
 
 '''
 @blueprint.route("/experiment/source/<source>/program/<program>/aliquots")
@@ -228,9 +228,9 @@ def experiment_source_program_aliquots(source, program):
             for tumor in tumors_related_to_source:
                 aliquots = aliquots + get_documents(mongodb_client, collection, find_attributes={ 'tumor': tumor }, find_criteria={ 'aliquot':1 }, get_one_element="aliquot")
         data['aliquots'] = list(set(aliquots))
-    js = json.dumps(data, indent=4, sort_keys=True);
-    resp = Response(js, status=200, mimetype='application/json');
-    return resp;
+    js = json.dumps(data, indent=4, sort_keys=True)
+    resp = Response(js, status=200, mimetype='application/json')
+    return resp
 '''
 
 @blueprint.route("/experiment/source/<source>/program/<program>/datatypes")
@@ -260,9 +260,9 @@ def experiment_source_program_datatypes(source, program):
                         'description': datatype['description']
                     } )
                     break
-    js = json.dumps(data, indent=4, sort_keys=True);
-    resp = Response(js, status=200, mimetype='application/json');
-    return resp;
+    js = json.dumps(data, indent=4, sort_keys=True)
+    resp = Response(js, status=200, mimetype='application/json')
+    return resp
 
 @blueprint.route("/experiment/source/<source>/program/<program>/tumors")
 def experiment_source_program_tumors(source, program):
@@ -288,9 +288,9 @@ def experiment_source_program_tumors(source, program):
                     'id': tumor['tag'],
                     'description': tumor['description']
                 } )
-    js = json.dumps(data, indent=4, sort_keys=True);
-    resp = Response(js, status=200, mimetype='application/json');
-    return resp;
+    js = json.dumps(data, indent=4, sort_keys=True)
+    resp = Response(js, status=200, mimetype='application/json')
+    return resp
 
 @blueprint.route("/experiment/source/<source>/program/<program>/tumor/<tumor>/datatypes")
 def experiment_source_program_tumor_datatypes(source, program, tumor):
@@ -322,9 +322,9 @@ def experiment_source_program_tumor_datatypes(source, program, tumor):
                                 'description': datatype['description']
                             } )
                 break
-    js = json.dumps(data, indent=4, sort_keys=True);
-    resp = Response(js, status=200, mimetype='application/json');
-    return resp;
+    js = json.dumps(data, indent=4, sort_keys=True)
+    resp = Response(js, status=200, mimetype='application/json')
+    return resp
 
 @blueprint.route("/experiment/source/<source>/program/<program>/tumor/<tumor>/aliquots")
 def experiment_source_program_tumor_aliquots(source, program, tumor):
@@ -354,9 +354,9 @@ def experiment_source_program_tumor_aliquots(source, program, tumor):
             for collection in collections:
                 aliquots =  aliquots + get_documents(mongodb_client, collection, find_attributes={ 'tumor': tumor }, find_criteria={ 'aliquot':1 }, get_one_element="aliquot")
             data['aliquots'] = list(set(aliquots))
-    js = json.dumps(data, indent=4, sort_keys=True);
-    resp = Response(js, status=200, mimetype='application/json');
-    return resp;
+    js = json.dumps(data, indent=4, sort_keys=True)
+    resp = Response(js, status=200, mimetype='application/json')
+    return resp
 
 @blueprint.route("/experiment/source/<source>/program/<program>/tumor/<tumor>/datatype/<datatype>/aliquots")
 def experiment_source_program_tumor_datatype_aliquots(source, program, tumor, datatype):
@@ -403,9 +403,9 @@ def experiment_source_program_tumor_datatype_aliquots(source, program, tumor, da
                 #    yield '] }'
                 #return Response( generatorRes(mongodb_client, source, program, tumor, datatype), mimetype='application/json' )
     
-    js = json.dumps(data, indent=4, sort_keys=True);
-    resp = Response(js, status=200, mimetype='application/json');
-    return resp;
+    js = json.dumps(data, indent=4, sort_keys=True)
+    resp = Response(js, status=200, mimetype='application/json')
+    return resp
 
 @blueprint.route("/experiment/source/<source>/program/<program>/tumor/<tumor>/datatype/<datatype>/aliquot/<aliquot>/all")
 def experiment_source_program_tumor_datatype_aliquot_all(source, program, tumor, datatype, aliquot):
@@ -460,9 +460,9 @@ def experiment_source_program_tumor_datatype_aliquot_all(source, program, tumor,
             data['data'] = get_documents_by_join(mongodb_client, "experiment_"+datatype, annotation_collection, elem_attribute, elem_attribute, as_field, match_field, fields)
         else:
             data['data'] = get_documents(mongodb_client, "experiment_"+datatype, find_attributes={ 'tumor': tumor, 'aliquot': aliquot }, find_criteria={ 'tumor':0, 'aliquot':0, 'source':0, '_id':0 })
-    js = json.dumps(data, indent=4, sort_keys=True);
-    resp = Response(js, status=200, mimetype='application/json');
-    return resp;
+    js = json.dumps(data, indent=4, sort_keys=True)
+    resp = Response(js, status=200, mimetype='application/json')
+    return resp
 
 @blueprint.route("/experiment/source/<source>/program/<program>/tumor/<tumor>/datatype/<datatype>/aliquot/<aliquot>/coordinates")
 def experiment_source_program_tumor_datatype_aliquot_coordinates(source, program, tumor, datatype, aliquot):
@@ -513,9 +513,9 @@ def experiment_source_program_tumor_datatype_aliquot_coordinates(source, program
             data['coordinates'] = get_documents_by_join(mongodb_client, collection_name, collection_from_name, join_field, join_field, as_field, match_field, fields)
         else:
             data['coordinates'] = get_documents(mongodb_client, collection_name, find_attributes={ 'tumor': tumor, 'aliquot': aliquot }, find_criteria={ 'chr':1, 'start':1, 'end':1, 'strand':1, '_id':0 })
-    js = json.dumps(data, indent=4, sort_keys=True);
-    resp = Response(js, status=200, mimetype='application/json');
-    return resp;
+    js = json.dumps(data, indent=4, sort_keys=True)
+    resp = Response(js, status=200, mimetype='application/json')
+    return resp
 
 @blueprint.route("/experiment/source/<source>/program/<program>/tumor/<tumor>/datatype/<datatype>/aliquot/<aliquot>/ids")
 def experiment_source_program_tumor_datatype_aliquot_ids(source, program, tumor, datatype, aliquot):
@@ -544,9 +544,9 @@ def experiment_source_program_tumor_datatype_aliquot_ids(source, program, tumor,
         'aliquot': aliquot,
         ids_experiment: get_documents(mongodb_client, "experiment_"+datatype, find_attributes={ 'tumor': tumor, 'aliquot': aliquot }, find_criteria={ elem_attribute:1 }, get_one_element=elem_attribute)
     }
-    js = json.dumps(data, indent=4, sort_keys=True);
-    resp = Response(js, status=200, mimetype='application/json');
-    return resp;
+    js = json.dumps(data, indent=4, sort_keys=True)
+    resp = Response(js, status=200, mimetype='application/json')
+    return resp
 
 @blueprint.route("/experiment/source/<source>/program/<program>/tumor/<tumor>/datatype/<datatype>/aliquot/<aliquot>/id/<elem_id>")
 def experiment_source_program_tumor_datatype_aliquot_elemid_all(source, program, tumor, datatype, aliquot, elem_id):
@@ -616,9 +616,9 @@ def experiment_source_program_tumor_datatype_aliquot_elemid_all(source, program,
             data['data'] = get_documents_by_join(mongodb_client, "experiment_"+datatype, annotation_collection, elem_attribute, elem_attribute, as_field, match_field, fields)
         else:
             data['data'] = get_documents(mongodb_client, "experiment_"+datatype, find_attributes={ 'tumor': tumor, 'aliquot': aliquot, elem_attribute: elem_id }, find_criteria={ 'tumor':0, 'aliquot':0, 'source':0, '_id':0 })
-    js = json.dumps(data, indent=4, sort_keys=True);
-    resp = Response(js, status=200, mimetype='application/json');
-    return resp;
+    js = json.dumps(data, indent=4, sort_keys=True)
+    resp = Response(js, status=200, mimetype='application/json')
+    return resp
 
 @blueprint.route("/experiment/aliquot/<aliquot>/list")
 def experiment_aliquot_list(aliquot):
@@ -631,9 +631,9 @@ def experiment_aliquot_list(aliquot):
         'aliquot': aliquot,
         'hits': hits
     }
-    js = json.dumps(data, indent=4, sort_keys=True);
-    resp = Response(js, status=200, mimetype='application/json');
-    return resp;
+    js = json.dumps(data, indent=4, sort_keys=True)
+    resp = Response(js, status=200, mimetype='application/json')
+    return resp
 
 @blueprint.route("/experiment/source/<source>/program/<program>/tumor/<tumor>/datatype/<datatype>/aliquot/<aliquot>/overlap/chrom/<chrom>/start/<start>/end/<end>/strand/<strand>")
 def experiment_overlap(source, program, tumor, datatype, aliquot, chrom, start, end, strand):
@@ -661,6 +661,6 @@ def experiment_overlap(source, program, tumor, datatype, aliquot, chrom, start, 
         'strand': strand,
         'hits': get_documents(mongodb_client, collection_name, find_attributes=find_attributes)
     }
-    js = json.dumps(data, indent=4, sort_keys=True);
-    resp = Response(js, status=200, mimetype='application/json');
-    return resp;
+    js = json.dumps(data, indent=4, sort_keys=True)
+    resp = Response(js, status=200, mimetype='application/json')
+    return resp

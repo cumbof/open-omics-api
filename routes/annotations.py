@@ -50,9 +50,9 @@ def annotation_ids(annotation_name):
     id_annotation = ''
     ids_name = ''
     if annotation_name.lower() == "geneexpression":
-        id_annotation = 'ensembl_gene_id'
+        id_annotation = 'gene_symbol'
         find_criteria = { id_annotation:1 }
-        ids_name = 'ensembl_gene_ids'
+        ids_name = 'gene_symbols'
     elif annotation_name.lower() == "humanmethylation":
         id_annotation = 'composite_element_ref'
         find_criteria = { id_annotation:1 }
@@ -70,7 +70,7 @@ def annotation_id(annotation_name, elem_id):
     mongodb_client = getClient()
     find_attributes = { }
     if annotation_name.lower() == "geneexpression":
-        find_attributes = { 'ensembl_gene_id': elem_id }
+        find_attributes = { 'gene_symbol': elem_id }
     elif annotation_name.lower() == "humanmethylation":
         find_attributes = { 'composite_element_ref': elem_id }
     data = {

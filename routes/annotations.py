@@ -37,7 +37,7 @@ def annotation_coordinates(annotation_name):
     mongodb_client = getClient()
     data = {
         'annotation': 'annotation_' + annotation_name,
-        'coordinates': get_documents(mongodb_client, annotation_name, find_criteria={ 'chrom':1, 'start':1, 'end':1, 'strand':1 })
+        'coordinates': get_documents(mongodb_client, 'annotation_' + annotation_name, find_criteria={ 'chrom':1, 'start':1, 'end':1, 'strand':1 })
     }
     js = json.dumps(data, indent=4, sort_keys=True)
     resp = Response(js, status=200, mimetype='application/json')
@@ -59,7 +59,7 @@ def annotation_ids(annotation_name):
         ids_name = 'composite_elements_ref'
     data = {
         'annotation': 'annotation_' + annotation_name,
-        ids_name: get_documents(mongodb_client, annotation_name, find_criteria=find_criteria, get_one_element=id_annotation)
+        ids_name: get_documents(mongodb_client, 'annotation_' + annotation_name, find_criteria=find_criteria, get_one_element=id_annotation)
     }
     js = json.dumps(data, indent=4, sort_keys=True)
     resp = Response(js, status=200, mimetype='application/json')
@@ -75,7 +75,7 @@ def annotation_id(annotation_name, elem_id):
         find_attributes = { 'composite_element_ref': elem_id }
     data = {
         'annotation': 'annotation_' + annotation_name,
-        'id': get_documents(mongodb_client, annotation_name, find_attributes=find_attributes)
+        'id': get_documents(mongodb_client, 'annotation_' + annotation_name, find_attributes=find_attributes)
     }
     js = json.dumps(data, indent=4, sort_keys=True)
     resp = Response(js, status=200, mimetype='application/json')
